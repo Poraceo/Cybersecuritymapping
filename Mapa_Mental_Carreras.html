@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapa Mental · Mapa de Carreras en Ciberseguridad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Sora:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-deep:#0A0E1A;--bg-card:#131826;--bg-elevated:#1A2030;
+  --border:#2A3149;--border-bright:#3A4566;
+  --text-primary:#F8FAFC;--text-secondary:#CBD5E1;--text-muted:#94A3B8;--text-dim:#64748B;
+  --accent-gold:#F59E0B;--accent-mint:#10B981;--accent-magenta:#EC4899;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg-deep);color:var(--text-primary);font-family:'Sora',sans-serif;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 1400px 900px at 70% 0%,rgba(245,158,11,0.05),transparent 60%),radial-gradient(ellipse 1200px 800px at 30% 100%,rgba(236,72,153,0.04),transparent 60%);pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,0.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.012) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;z-index:0}
+.mm-app{position:relative;z-index:1;max-width:1900px;margin:0 auto;padding:36px 48px 80px}
+
+.mm-top{display:flex;justify-content:space-between;align-items:center;padding-bottom:24px;margin-bottom:32px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:16px}
+.mm-brand{display:flex;align-items:center;gap:14px;font-family:'Bricolage Grotesque',serif;font-weight:700;font-size:22px;letter-spacing:-0.02em}
+.mm-brand-mark{width:38px;height:38px;background:linear-gradient(135deg,var(--accent-gold),var(--accent-magenta));border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:800;font-size:18px;color:var(--bg-deep)}
+.mm-brand em{font-style:italic;color:var(--accent-gold)}
+.mm-brand-meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:0.15em;text-transform:uppercase;margin-top:2px}
+.mm-link{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-secondary);text-decoration:none;padding:8px 14px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;letter-spacing:0.1em;text-transform:uppercase;transition:all 0.2s}
+.mm-link:hover{background:var(--bg-elevated);color:var(--accent-gold);border-color:var(--accent-gold)}
+
+.mm-hero{margin-bottom:32px}
+.mm-hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent-gold);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:12px}
+.mm-hero-eyebrow::before{content:'';width:28px;height:1px;background:var(--accent-gold)}
+.mm-hero-title{font-family:'Bricolage Grotesque',serif;font-size:clamp(40px,4.5vw,60px);font-weight:700;line-height:1;letter-spacing:-0.035em;margin-bottom:14px;background:linear-gradient(180deg,#FFFFFF,#94A3B8 130%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.mm-hero-title em{font-style:italic;color:var(--accent-gold);-webkit-text-fill-color:var(--accent-gold);font-weight:500}
+.mm-hero-sub{color:var(--text-secondary);font-size:16px;max-width:800px;line-height:1.55}
+
+.mm-legend{display:flex;flex-wrap:wrap;gap:8px 14px;padding:18px 22px;background:var(--bg-card);border:1px solid var(--border);border-radius:14px;margin-bottom:40px;align-items:center}
+.mm-legend::before{content:'CATEGORÍAS';font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:0.2em;padding-right:8px;border-right:1px solid var(--border);margin-right:4px}
+.mm-legend-item{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text-secondary)}
+.mm-legend-dot{width:10px;height:10px;border-radius:3px}
+.mm-legend-label{font-weight:500}
+.mm-legend-count{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);padding:1px 6px;background:rgba(255,255,255,0.05);border-radius:4px}
+
+.mm-map{display:flex;flex-direction:column;gap:24px;position:relative}
+.mm-map::before{
+  content:'';position:absolute;left:88px;top:30px;bottom:30px;width:2px;
+  background:linear-gradient(180deg,var(--accent-mint) 0%,var(--accent-mint) 25%,var(--accent-gold) 50%,var(--accent-magenta) 75%,var(--accent-magenta) 100%);
+  opacity:0.4;z-index:0;border-radius:2px;
+}
+
+.mm-band{display:grid;grid-template-columns:200px 1fr;gap:36px;align-items:stretch;position:relative;z-index:1}
+
+.mm-band-label{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:14px;
+  padding:20px;display:flex;flex-direction:column;gap:4px;position:relative;
+  border-left:4px solid var(--band-color);
+}
+.mm-band-label::after{
+  content:'';position:absolute;right:-26px;top:50%;width:22px;height:2px;
+  background:var(--band-color);transform:translateY(-1px);z-index:2;
+}
+.mm-band-label::before{
+  content:'';position:absolute;right:-32px;top:50%;width:10px;height:10px;
+  background:var(--band-color);border-radius:50%;transform:translate(0,-50%);
+  box-shadow:0 0 12px var(--band-color);z-index:3;
+}
+.mm-band-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--band-color);letter-spacing:0.2em}
+.mm-band-name{font-family:'Bricolage Grotesque',serif;font-size:22px;font-weight:700;letter-spacing:-0.025em;line-height:1.1;margin-top:4px}
+.mm-band-years{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);margin-top:4px}
+.mm-band-count{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:11px;color:var(--text-secondary);font-family:'JetBrains Mono',monospace;letter-spacing:0.1em}
+
+.mm-band-cards{
+  display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start;padding:4px 0;
+  border-left:1px dashed var(--border);padding-left:24px;
+}
+
+.mm-card{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:10px;
+  padding:10px 13px;min-width:175px;max-width:215px;position:relative;
+  transition:all 0.2s;cursor:default;border-left:3px solid var(--card-color);
+}
+.mm-card:hover{
+  background:var(--bg-elevated);transform:translateY(-2px);
+  box-shadow:0 6px 16px rgba(0,0,0,0.4);border-color:var(--card-color);z-index:2;
+}
+.mm-card::before{
+  content:'';position:absolute;top:0;right:0;width:50%;height:100%;
+  background:linear-gradient(135deg,transparent 50%,var(--card-glow));
+  pointer-events:none;border-radius:0 10px 10px 0;opacity:0.6;
+}
+.mm-card-num{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:0.15em;margin-bottom:3px;position:relative}
+.mm-card-name{font-family:'Bricolage Grotesque',serif;font-size:14px;font-weight:600;letter-spacing:-0.015em;line-height:1.2;margin-bottom:5px;position:relative}
+.mm-card-salary{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent-gold);font-weight:600;position:relative}
+
+.mm-footer{margin-top:56px;padding-top:32px;border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.mm-foot-block h4{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent-gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:12px}
+.mm-foot-block p{font-size:13px;color:var(--text-secondary);line-height:1.6}
+
+@media print{
+  body::before,body::after{display:none}
+  .mm-app{padding:20px}
+  .mm-link{display:none}
+}
+
+@media (max-width:1100px){
+  .mm-band{grid-template-columns:1fr;gap:12px}
+  .mm-band-label::after,.mm-band-label::before{display:none}
+  .mm-map::before{display:none}
+  .mm-band-cards{border-left:none;padding-left:0}
+  .mm-footer{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .mm-app{padding:20px}
+  .mm-card{min-width:140px}
+}
+</style>
+</head>
+<body>
+<div class="mm-app">
+  <div class="mm-top">
+    <div class="mm-brand">
+      <div class="mm-brand-mark">⌘</div>
+      <div>
+        <div>Cyber<em>.map</em> <span style="font-size:13px;color:var(--text-muted);font-weight:400;margin-left:6px">/ Vista panorámica</span></div>
+        <div class="mm-brand-meta">MAPA MENTAL · 50 ROLES · 5 NIVELES</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <a class="mm-link" href="Mapa_General_Carreras.html">→ Mapa general</a>
+      <a class="mm-link" href="Mapa_Carreras_Ciberseguridad.html">→ Versión interactiva</a>
+    </div>
+  </div>
+
+  <div class="mm-hero">
+    <div class="mm-hero-eyebrow">VISTA PANORÁMICA · TODOS LOS ROLES EN UNA PANTALLA</div>
+    <h1 class="mm-hero-title">El universo de la <em>ciberseguridad</em>,<br>de un solo vistazo.</h1>
+    <p class="mm-hero-sub">El eje vertical muestra la progresión de seniority — desde Junior hasta C-Level. Las tarjetas dentro de cada banda están agrupadas por categoría (color del borde izquierdo). Pasa el cursor sobre cualquier rol para ver su nombre completo.</p>
+  </div>
+
+  <div class="mm-legend">
+    <div class="mm-legend-item">
+            <span class="mm-legend-dot" style="background:#60A5FA"></span>
+            <span class="mm-legend-label">Defensivo / Blue Team</span>
+            <span class="mm-legend-count">6</span>
+        </div><div class="mm-legend-item">
+            <span class="mm-legend-dot" style="background:#F87171"></span>
+            <span class="mm-legend-label">Ofensivo / Red Team</span>
+            <span class="mm-legend-count">4</span>
+        </div><div class="mm-legend-item">
+            <span class="mm-legend-dot" style="background:#34D399"></span>
+            <span class="mm-legend-label">Arquitectura / Ingeniería</span>
+            <span class="mm-legend-count">9</span>
+        </div><div class="mm-legend-item">
+            <span class="mm-legend-dot" style="background:#C084FC"></span>
+            <span class="mm-legend-label">Especializado</span>
+            <span class="mm-legend-count">6</span>
+        </div><div class="mm-legend-item">
+            <span class="mm-legend-dot" style="background:#FBBF24"></span>
+            <span class="mm-legend-label">GRC / Cumplimiento</span>
+            <span class="mm-legend-count">6</span>
+        </div><div class="mm-legend-item">
+            <span class="mm-legend-dot" style="background:#FB923C"></span>
+            <span class="mm-legend-label">Legal / Privacidad</span>
+            <span class="mm-legend-count">2</span>
+        </div><div class="mm-legend-item">
+            <span class="mm-legend-dot" style="background:#F472B6"></span>
+            <span class="mm-legend-label">Gerencial / Liderazgo</span>
+            <span class="mm-legend-count">5</span>
+        </div><div class="mm-legend-item">
+            <span class="mm-legend-dot" style="background:#818CF8"></span>
+            <span class="mm-legend-label">Ventas / Consultoría</span>
+            <span class="mm-legend-count">3</span>
+        </div><div class="mm-legend-item">
+            <span class="mm-legend-dot" style="background:#22D3EE"></span>
+            <span class="mm-legend-label">Awareness / Educación</span>
+            <span class="mm-legend-count">2</span>
+        </div><div class="mm-legend-item">
+            <span class="mm-legend-dot" style="background:#9CA3AF"></span>
+            <span class="mm-legend-label">Operaciones</span>
+            <span class="mm-legend-count">3</span>
+        </div><div class="mm-legend-item">
+            <span class="mm-legend-dot" style="background:#D4D4D8"></span>
+            <span class="mm-legend-label">Soporte al Ecosistema</span>
+            <span class="mm-legend-count">4</span>
+        </div>
+  </div>
+
+  <div class="mm-map">
+    <div class="mm-band">
+            <div class="mm-band-label" style="--band-color:#10B981;">
+                <div class="mm-band-num">/ NIVEL 01</div>
+                <div class="mm-band-name">Junior</div>
+                <div class="mm-band-years">0-3 años</div>
+                <div class="mm-band-count">4 roles</div>
+            </div>
+            <div class="mm-band-cards"><div class="mm-card" style="--card-color:#60A5FA;--card-glow:rgba(96,165,250,0.12);" title="SOC Analyst Tier 1 — Analista SOC Nivel 1">
+                    <div class="mm-card-num">#01 · Defensivo</div>
+                    <div class="mm-card-name">SOC Analyst Tier 1</div>
+                    <div class="mm-card-salary">hasta $6,700/mes</div>
+                </div><div class="mm-card" style="--card-color:#F87171;--card-glow:rgba(248,113,113,0.12);" title="Junior Penetration Tester — Pentester Junior / Hacker Ético">
+                    <div class="mm-card-num">#07 · Ofensivo</div>
+                    <div class="mm-card-name">Junior Penetration Tester</div>
+                    <div class="mm-card-salary">hasta $8,300/mes</div>
+                </div><div class="mm-card" style="--card-color:#FBBF24;--card-glow:rgba(251,191,36,0.12);" title="GRC Analyst Junior — Analista GRC Junior">
+                    <div class="mm-card-num">#26 · GRC</div>
+                    <div class="mm-card-name">GRC Analyst Junior</div>
+                    <div class="mm-card-salary">hasta $7,900/mes</div>
+                </div><div class="mm-card" style="--card-color:#9CA3AF;--card-glow:rgba(156,163,175,0.12);" title="Endpoint Security / Patch Admin — Administrador de Endpoint Security">
+                    <div class="mm-card-num">#45 · Operaciones</div>
+                    <div class="mm-card-name">Endpoint Security / Patch Admin</div>
+                    <div class="mm-card-salary">hasta $6,700/mes</div>
+                </div></div>
+        </div><div class="mm-band">
+            <div class="mm-band-label" style="--band-color:#06B6D4;">
+                <div class="mm-band-num">/ NIVEL 02</div>
+                <div class="mm-band-name">Mid-Level</div>
+                <div class="mm-band-years">3-7 años</div>
+                <div class="mm-band-count">26 roles</div>
+            </div>
+            <div class="mm-band-cards"><div class="mm-card" style="--card-color:#60A5FA;--card-glow:rgba(96,165,250,0.12);" title="SOC Analyst Tier 2 — Analista SOC Nivel 2">
+                    <div class="mm-card-num">#02 · Defensivo</div>
+                    <div class="mm-card-name">SOC Analyst Tier 2</div>
+                    <div class="mm-card-salary">hasta $10,800/mes</div>
+                </div><div class="mm-card" style="--card-color:#60A5FA;--card-glow:rgba(96,165,250,0.12);" title="Incident Responder / DFIR Analyst — Respondedor a Incidentes / Forense Digital">
+                    <div class="mm-card-num">#04 · Defensivo</div>
+                    <div class="mm-card-name">Incident Responder</div>
+                    <div class="mm-card-salary">hasta $17,900/mes</div>
+                </div><div class="mm-card" style="--card-color:#60A5FA;--card-glow:rgba(96,165,250,0.12);" title="Threat Intelligence Analyst (CTI) — Analista de Inteligencia de Amenazas">
+                    <div class="mm-card-num">#06 · Defensivo</div>
+                    <div class="mm-card-name">Threat Intelligence Analyst (C…</div>
+                    <div class="mm-card-salary">hasta $13,300/mes</div>
+                </div><div class="mm-card" style="--card-color:#F87171;--card-glow:rgba(248,113,113,0.12);" title="Bug Bounty Hunter — Cazador de Bugs / Investigador">
+                    <div class="mm-card-num">#10 · Ofensivo</div>
+                    <div class="mm-card-name">Bug Bounty Hunter</div>
+                    <div class="mm-card-salary">hasta $40,000+ (variable)/mes</div>
+                </div><div class="mm-card" style="--card-color:#34D399;--card-glow:rgba(52,211,153,0.12);" title="Security Engineer — Ingeniero de Seguridad">
+                    <div class="mm-card-num">#11 · Arquitectura</div>
+                    <div class="mm-card-name">Security Engineer</div>
+                    <div class="mm-card-salary">hasta $13,300/mes</div>
+                </div><div class="mm-card" style="--card-color:#34D399;--card-glow:rgba(52,211,153,0.12);" title="Application Security (AppSec) Engineer — Ingeniero de Seguridad de Aplicaciones">
+                    <div class="mm-card-num">#12 · Arquitectura</div>
+                    <div class="mm-card-name">Application Security (AppSec) …</div>
+                    <div class="mm-card-salary">hasta $17,500/mes</div>
+                </div><div class="mm-card" style="--card-color:#34D399;--card-glow:rgba(52,211,153,0.12);" title="DevSecOps Engineer — Ingeniero DevSecOps">
+                    <div class="mm-card-num">#13 · Arquitectura</div>
+                    <div class="mm-card-name">DevSecOps Engineer</div>
+                    <div class="mm-card-salary">hasta $17,500/mes</div>
+                </div><div class="mm-card" style="--card-color:#34D399;--card-glow:rgba(52,211,153,0.12);" title="Cloud Security Engineer — Ingeniero de Seguridad en la Nube">
+                    <div class="mm-card-num">#14 · Arquitectura</div>
+                    <div class="mm-card-name">Cloud Security Engineer</div>
+                    <div class="mm-card-salary">hasta $14,600/mes</div>
+                </div><div class="mm-card" style="--card-color:#34D399;--card-glow:rgba(52,211,153,0.12);" title="Network Security Engineer — Ingeniero de Seguridad de Redes">
+                    <div class="mm-card-num">#17 · Arquitectura</div>
+                    <div class="mm-card-name">Network Security Engineer</div>
+                    <div class="mm-card-salary">hasta $12,500/mes</div>
+                </div><div class="mm-card" style="--card-color:#34D399;--card-glow:rgba(52,211,153,0.12);" title="IAM / Identity Engineer — Ingeniero de Identidad y Accesos">
+                    <div class="mm-card-num">#18 · Arquitectura</div>
+                    <div class="mm-card-name">IAM / Identity Engineer</div>
+                    <div class="mm-card-salary">hasta $11,700/mes</div>
+                </div><div class="mm-card" style="--card-color:#C084FC;--card-glow:rgba(192,132,252,0.12);" title="Mobile Security Engineer — Ingeniero de Seguridad Móvil">
+                    <div class="mm-card-num">#22 · Especializado</div>
+                    <div class="mm-card-name">Mobile Security Engineer</div>
+                    <div class="mm-card-salary">hasta $13,800/mes</div>
+                </div><div class="mm-card" style="--card-color:#C084FC;--card-glow:rgba(192,132,252,0.12);" title="AI / ML Security Engineer — Ingeniero de Seguridad de IA">
+                    <div class="mm-card-num">#23 · Especializado</div>
+                    <div class="mm-card-name">AI / ML Security Engineer</div>
+                    <div class="mm-card-salary">hasta $24,200/mes</div>
+                </div><div class="mm-card" style="--card-color:#C084FC;--card-glow:rgba(192,132,252,0.12);" title="Kubernetes Security Specialist — Especialista en Seguridad K8s">
+                    <div class="mm-card-num">#25 · Especializado</div>
+                    <div class="mm-card-name">Kubernetes Security Specialist</div>
+                    <div class="mm-card-salary">hasta $16,700/mes</div>
+                </div><div class="mm-card" style="--card-color:#FBBF24;--card-glow:rgba(251,191,36,0.12);" title="Senior GRC Analyst / Compliance Officer — Analista Senior GRC">
+                    <div class="mm-card-num">#27 · GRC</div>
+                    <div class="mm-card-name">Senior GRC Analyst</div>
+                    <div class="mm-card-salary">hasta $12,500/mes</div>
+                </div><div class="mm-card" style="--card-color:#FBBF24;--card-glow:rgba(251,191,36,0.12);" title="IT Auditor — Auditor de TI / Sistemas">
+                    <div class="mm-card-num">#28 · GRC</div>
+                    <div class="mm-card-name">IT Auditor</div>
+                    <div class="mm-card-salary">hasta $10,000/mes</div>
+                </div><div class="mm-card" style="--card-color:#FBBF24;--card-glow:rgba(251,191,36,0.12);" title="Cyber Risk Manager — Gerente de Riesgo Cibernético">
+                    <div class="mm-card-num">#29 · GRC</div>
+                    <div class="mm-card-name">Cyber Risk Manager</div>
+                    <div class="mm-card-salary">hasta $15,000/mes</div>
+                </div><div class="mm-card" style="--card-color:#FBBF24;--card-glow:rgba(251,191,36,0.12);" title="Privacy Engineer / Consultant — Ingeniero / Consultor de Privacidad">
+                    <div class="mm-card-num">#30 · GRC</div>
+                    <div class="mm-card-name">Privacy Engineer / Consultant</div>
+                    <div class="mm-card-salary">hasta $15,000/mes</div>
+                </div><div class="mm-card" style="--card-color:#FBBF24;--card-glow:rgba(251,191,36,0.12);" title="ISO 27001 Lead Auditor/Implementer — Auditor/Implementador Líder ISO 27001">
+                    <div class="mm-card-num">#31 · GRC</div>
+                    <div class="mm-card-name">ISO 27001 Lead Auditor</div>
+                    <div class="mm-card-salary">hasta $11,700/mes</div>
+                </div><div class="mm-card" style="--card-color:#818CF8;--card-glow:rgba(129,140,248,0.12);" title="Security Sales Engineer / Presales — Ingeniero de Preventa de Ciberseguridad">
+                    <div class="mm-card-num">#39 · Ventas</div>
+                    <div class="mm-card-name">Security Sales Engineer</div>
+                    <div class="mm-card-salary">hasta $26,900/mes</div>
+                </div><div class="mm-card" style="--card-color:#818CF8;--card-glow:rgba(129,140,248,0.12);" title="Security Consultant / Advisory — Consultor de Ciberseguridad">
+                    <div class="mm-card-num">#40 · Ventas</div>
+                    <div class="mm-card-name">Security Consultant / Advisory</div>
+                    <div class="mm-card-salary">hasta $12,500/mes</div>
+                </div><div class="mm-card" style="--card-color:#22D3EE;--card-glow:rgba(34,211,238,0.12);" title="Security Awareness Specialist — Especialista en Concientización">
+                    <div class="mm-card-num">#42 · Awareness</div>
+                    <div class="mm-card-name">Security Awareness Specialist</div>
+                    <div class="mm-card-salary">hasta $17,400/mes</div>
+                </div><div class="mm-card" style="--card-color:#22D3EE;--card-glow:rgba(34,211,238,0.12);" title="Cybersecurity Trainer / Instructor — Instructor de Ciberseguridad">
+                    <div class="mm-card-num">#43 · Awareness</div>
+                    <div class="mm-card-name">Cybersecurity Trainer</div>
+                    <div class="mm-card-salary">hasta $11,700/mes</div>
+                </div><div class="mm-card" style="--card-color:#9CA3AF;--card-glow:rgba(156,163,175,0.12);" title="Vulnerability Management Analyst — Analista de Gestión de Vulnerabilidades">
+                    <div class="mm-card-num">#44 · Operaciones</div>
+                    <div class="mm-card-name">Vulnerability Management Analyst</div>
+                    <div class="mm-card-salary">hasta $18,100/mes</div>
+                </div><div class="mm-card" style="--card-color:#9CA3AF;--card-glow:rgba(156,163,175,0.12);" title="IAM Operations / PAM Admin — Administrador de IAM/PAM">
+                    <div class="mm-card-num">#46 · Operaciones</div>
+                    <div class="mm-card-name">IAM Operations / PAM Admin</div>
+                    <div class="mm-card-salary">hasta $9,200/mes</div>
+                </div><div class="mm-card" style="--card-color:#D4D4D8;--card-glow:rgba(212,212,216,0.12);" title="Cybersecurity Technical Writer — Redactor Técnico de Ciberseguridad">
+                    <div class="mm-card-num">#47 · Soporte al Ecosistema</div>
+                    <div class="mm-card-name">Cybersecurity Technical Writer</div>
+                    <div class="mm-card-salary">hasta $10,800/mes</div>
+                </div><div class="mm-card" style="--card-color:#D4D4D8;--card-glow:rgba(212,212,216,0.12);" title="Cybersecurity Recruiter — Reclutador Especializado en Ciberseguridad">
+                    <div class="mm-card-num">#48 · Soporte al Ecosistema</div>
+                    <div class="mm-card-name">Cybersecurity Recruiter</div>
+                    <div class="mm-card-salary">hasta $15,000/mes</div>
+                </div></div>
+        </div><div class="mm-band">
+            <div class="mm-band-label" style="--band-color:#F59E0B;">
+                <div class="mm-band-num">/ NIVEL 03</div>
+                <div class="mm-band-name">Senior</div>
+                <div class="mm-band-years">5-12 años</div>
+                <div class="mm-band-count">14 roles</div>
+            </div>
+            <div class="mm-band-cards"><div class="mm-card" style="--card-color:#60A5FA;--card-glow:rgba(96,165,250,0.12);" title="SOC Analyst Tier 3 / Threat Hunter — Cazador de Amenazas">
+                    <div class="mm-card-num">#03 · Defensivo</div>
+                    <div class="mm-card-name">SOC Analyst Tier 3</div>
+                    <div class="mm-card-salary">hasta $18,300/mes</div>
+                </div><div class="mm-card" style="--card-color:#60A5FA;--card-glow:rgba(96,165,250,0.12);" title="Malware Analyst / Reverse Engineer — Analista de Malware / Ingeniero Inverso">
+                    <div class="mm-card-num">#05 · Defensivo</div>
+                    <div class="mm-card-name">Malware Analyst</div>
+                    <div class="mm-card-salary">hasta $24,800/mes</div>
+                </div><div class="mm-card" style="--card-color:#F87171;--card-glow:rgba(248,113,113,0.12);" title="Senior Pentester / Red Team Operator — Pentester Senior / Operador Red Team">
+                    <div class="mm-card-num">#08 · Ofensivo</div>
+                    <div class="mm-card-name">Senior Pentester</div>
+                    <div class="mm-card-salary">hasta $16,700/mes</div>
+                </div><div class="mm-card" style="--card-color:#34D399;--card-glow:rgba(52,211,153,0.12);" title="Cloud Security Architect — Arquitecto de Seguridad en la Nube">
+                    <div class="mm-card-num">#15 · Arquitectura</div>
+                    <div class="mm-card-name">Cloud Security Architect</div>
+                    <div class="mm-card-salary">hasta $24,200/mes</div>
+                </div><div class="mm-card" style="--card-color:#34D399;--card-glow:rgba(52,211,153,0.12);" title="Security Architect — Arquitecto de Seguridad">
+                    <div class="mm-card-num">#16 · Arquitectura</div>
+                    <div class="mm-card-name">Security Architect</div>
+                    <div class="mm-card-salary">hasta $20,800/mes</div>
+                </div><div class="mm-card" style="--card-color:#34D399;--card-glow:rgba(52,211,153,0.12);" title="Zero Trust Architect — Arquitecto de Confianza Cero">
+                    <div class="mm-card-num">#19 · Arquitectura</div>
+                    <div class="mm-card-name">Zero Trust Architect</div>
+                    <div class="mm-card-salary">hasta $23,300/mes</div>
+                </div><div class="mm-card" style="--card-color:#C084FC;--card-glow:rgba(192,132,252,0.12);" title="OT/ICS Security Engineer — Ingeniero de Seguridad Industrial">
+                    <div class="mm-card-num">#20 · Especializado</div>
+                    <div class="mm-card-name">OT/ICS Security Engineer</div>
+                    <div class="mm-card-salary">hasta $13,300/mes</div>
+                </div><div class="mm-card" style="--card-color:#C084FC;--card-glow:rgba(192,132,252,0.12);" title="IoT/Embedded Security Engineer — Ingeniero de Seguridad IoT">
+                    <div class="mm-card-num">#21 · Especializado</div>
+                    <div class="mm-card-name">IoT/Embedded Security Engineer</div>
+                    <div class="mm-card-salary">hasta $14,200/mes</div>
+                </div><div class="mm-card" style="--card-color:#C084FC;--card-glow:rgba(192,132,252,0.12);" title="Cryptographer / Crypto Engineer — Criptógrafo / Ingeniero Criptográfico">
+                    <div class="mm-card-num">#24 · Especializado</div>
+                    <div class="mm-card-name">Cryptographer / Crypto Engineer</div>
+                    <div class="mm-card-salary">hasta $20,800/mes</div>
+                </div><div class="mm-card" style="--card-color:#FB923C;--card-glow:rgba(251,146,60,0.12);" title="Data Protection Officer (DPO) — Oficial de Protección de Datos">
+                    <div class="mm-card-num">#32 · Legal</div>
+                    <div class="mm-card-name">Data Protection Officer (DPO)</div>
+                    <div class="mm-card-salary">hasta $19,900/mes</div>
+                </div><div class="mm-card" style="--card-color:#FB923C;--card-glow:rgba(251,146,60,0.12);" title="Cyber Lawyer — Abogado en Ciberseguridad y Privacidad">
+                    <div class="mm-card-num">#33 · Legal</div>
+                    <div class="mm-card-name">Cyber Lawyer</div>
+                    <div class="mm-card-salary">hasta $20,800/mes</div>
+                </div><div class="mm-card" style="--card-color:#818CF8;--card-glow:rgba(129,140,248,0.12);" title="Solutions Architect (Vendor) — Arquitecto de Soluciones (Vendor)">
+                    <div class="mm-card-num">#41 · Ventas</div>
+                    <div class="mm-card-name">Solutions Architect (Vendor)</div>
+                    <div class="mm-card-salary">hasta $23,300/mes</div>
+                </div><div class="mm-card" style="--card-color:#D4D4D8;--card-glow:rgba(212,212,216,0.12);" title="Cybersecurity Product Manager — Product Manager de Ciberseguridad">
+                    <div class="mm-card-num">#49 · Soporte al Ecosistema</div>
+                    <div class="mm-card-name">Cybersecurity Product Manager</div>
+                    <div class="mm-card-salary">hasta $20,800/mes</div>
+                </div><div class="mm-card" style="--card-color:#D4D4D8;--card-glow:rgba(212,212,216,0.12);" title="Threat Researcher (Vendor) — Investigador de Amenazas (Vendor)">
+                    <div class="mm-card-num">#50 · Soporte al Ecosistema</div>
+                    <div class="mm-card-name">Threat Researcher (Vendor)</div>
+                    <div class="mm-card-salary">hasta $20,800/mes</div>
+                </div></div>
+        </div><div class="mm-band">
+            <div class="mm-band-label" style="--band-color:#EC4899;">
+                <div class="mm-band-num">/ NIVEL 04</div>
+                <div class="mm-band-name">Manager / Lead</div>
+                <div class="mm-band-years">7-12 años</div>
+                <div class="mm-band-count">3 roles</div>
+            </div>
+            <div class="mm-band-cards"><div class="mm-card" style="--card-color:#F87171;--card-glow:rgba(248,113,113,0.12);" title="Red Team Lead — Líder de Red Team / Emulador de Adversarios">
+                    <div class="mm-card-num">#09 · Ofensivo</div>
+                    <div class="mm-card-name">Red Team Lead</div>
+                    <div class="mm-card-salary">hasta $20,800/mes</div>
+                </div><div class="mm-card" style="--card-color:#F472B6;--card-glow:rgba(244,114,182,0.12);" title="Security Manager — Gerente de Seguridad de la Información">
+                    <div class="mm-card-num">#34 · Gerencial</div>
+                    <div class="mm-card-name">Security Manager</div>
+                    <div class="mm-card-salary">hasta $15,000/mes</div>
+                </div><div class="mm-card" style="--card-color:#F472B6;--card-glow:rgba(244,114,182,0.12);" title="Security Program Manager — Gerente de Programa de Seguridad">
+                    <div class="mm-card-num">#35 · Gerencial</div>
+                    <div class="mm-card-name">Security Program Manager</div>
+                    <div class="mm-card-salary">hasta $15,000/mes</div>
+                </div></div>
+        </div><div class="mm-band">
+            <div class="mm-band-label" style="--band-color:#C084FC;">
+                <div class="mm-band-num">/ NIVEL 05</div>
+                <div class="mm-band-name">Director / C-Level</div>
+                <div class="mm-band-years">10+ años</div>
+                <div class="mm-band-count">3 roles</div>
+            </div>
+            <div class="mm-band-cards"><div class="mm-card" style="--card-color:#F472B6;--card-glow:rgba(244,114,182,0.12);" title="Director of Security / VP — Director / VP de Seguridad">
+                    <div class="mm-card-num">#36 · Gerencial</div>
+                    <div class="mm-card-name">Director of Security / VP</div>
+                    <div class="mm-card-salary">hasta $23,300/mes</div>
+                </div><div class="mm-card" style="--card-color:#F472B6;--card-glow:rgba(244,114,182,0.12);" title="CISO (Chief Information Security Officer) — Director Ejecutivo de Seguridad">
+                    <div class="mm-card-num">#37 · Gerencial</div>
+                    <div class="mm-card-name">CISO (Chief Information Securi…</div>
+                    <div class="mm-card-salary">hasta $39,200/mes</div>
+                </div><div class="mm-card" style="--card-color:#F472B6;--card-glow:rgba(244,114,182,0.12);" title="vCISO (Virtual / Fractional) — CISO Virtual / Fraccional">
+                    <div class="mm-card-num">#38 · Gerencial</div>
+                    <div class="mm-card-name">vCISO (Virtual / Fractional)</div>
+                    <div class="mm-card-salary">hasta $29,200 (variable)/mes</div>
+                </div></div>
+        </div>
+  </div>
+
+  <div class="mm-footer">
+    <div class="mm-foot-block">
+      <h4>Cómo leer este mapa</h4>
+      <p>Verticalmente: la progresión de carrera. Cada nivel agrupa los roles típicos de ese rango de experiencia. Horizontalmente, dentro de cada banda, los roles están agrupados por categoría (color en el borde izquierdo de cada tarjeta).</p>
+    </div>
+    <div class="mm-foot-block">
+      <h4>El salario que ves</h4>
+      <p>Es el tope mensual del rango global — lo que ganaría un Senior trabajando para USA. El mínimo del rango (no mostrado aquí) corresponde a entry-level en mercados LATAM. Ver la versión interactiva para rango completo y detalles.</p>
+    </div>
+    <div class="mm-foot-block">
+      <h4>Línea de tiempo</h4>
+      <p>La línea de color a la izquierda conecta los niveles para visualizar el flujo de una carrera completa: del verde (Junior) al magenta/morado (C-Level). No todos los caminos son lineales — hay saltos laterales, pivotes y caminos paralelos.</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

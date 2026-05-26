@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapa General · Carreras Ciberseguridad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Sora:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-deep:#0A0E1A;--bg-alt:#0E1322;--bg-card:#1A2236;--bg-elevated:#222B42;
+  --border:#2A3149;--border-bright:#3A4566;
+  --text-primary:#F8FAFC;--text-secondary:#CBD5E1;--text-muted:#94A3B8;--text-dim:#64748B;
+  --gold:#F59E0B;--mint:#10B981;--cyan:#06B6D4;--magenta:#EC4899;--violet:#C084FC;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg-deep);color:var(--text-primary);font-family:'Sora',sans-serif;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 1400px 900px at 70% 0%,rgba(245,158,11,0.05),transparent 60%),radial-gradient(ellipse 1200px 800px at 30% 100%,rgba(236,72,153,0.04),transparent 60%);pointer-events:none;z-index:0}
+
+.app{position:relative;z-index:1;max-width:2000px;margin:0 auto;padding:32px 36px 60px}
+
+/* === TOP BAR === */
+.top{display:flex;justify-content:space-between;align-items:center;padding-bottom:20px;margin-bottom:24px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:16px}
+.brand{display:flex;align-items:center;gap:14px;font-family:'Bricolage Grotesque',serif;font-weight:700;font-size:22px;letter-spacing:-0.02em}
+.brand-mark{width:38px;height:38px;background:linear-gradient(135deg,var(--gold),var(--magenta));border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:800;font-size:18px;color:var(--bg-deep)}
+.brand em{font-style:italic;color:var(--gold)}
+.brand-meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:0.15em;text-transform:uppercase;margin-top:2px}
+.nav-links{display:flex;gap:10px;flex-wrap:wrap}
+.nav-link{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-secondary);text-decoration:none;padding:8px 14px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;letter-spacing:0.1em;text-transform:uppercase;transition:all 0.2s}
+.nav-link:hover{background:var(--bg-elevated);color:var(--gold);border-color:var(--gold)}
+
+/* === HERO === */
+.hero{margin-bottom:28px}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:12px}
+.eyebrow::before{content:'';width:28px;height:1px;background:var(--gold)}
+.title{font-family:'Bricolage Grotesque',serif;font-size:clamp(36px,4vw,52px);font-weight:700;line-height:1;letter-spacing:-0.035em;margin-bottom:10px}
+.title em{font-style:italic;color:var(--gold);font-weight:500}
+.subtitle{color:var(--text-secondary);font-size:14px;max-width:900px;line-height:1.55;display:flex;gap:24px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace}
+.subtitle span{display:flex;align-items:center;gap:8px}
+.subtitle .arrow{color:var(--gold);font-size:16px}
+
+/* === FILTROS === */
+.filters{display:flex;gap:24px;padding:18px 22px;background:var(--bg-card);border:1px solid var(--border);border-radius:14px;margin-bottom:24px;flex-wrap:wrap;align-items:center}
+.filter-group{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.filter-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:0.2em;text-transform:uppercase;padding-right:8px;border-right:1px solid var(--border);margin-right:4px}
+.filter-chip{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-secondary);padding:5px 11px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:100px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:0.05em}
+.filter-chip:hover{background:rgba(255,255,255,0.08);color:var(--text-primary)}
+.filter-chip.active{background:var(--chip-color,var(--gold));color:var(--bg-deep);border-color:var(--chip-color,var(--gold));font-weight:600}
+.filter-chip .dot{width:8px;height:8px;border-radius:50%;background:var(--chip-color)}
+.filter-chip.active .dot{background:var(--bg-deep)}
+.reset-btn{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);background:none;border:none;cursor:pointer;text-decoration:underline;letter-spacing:0.1em;text-transform:uppercase}
+.reset-btn:hover{color:var(--gold)}
+
+/* === GRID === */
+.grid-wrapper{overflow-x:auto;padding-bottom:8px}
+.grid{display:grid;gap:0;border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--bg-card);min-width:1800px}
+
+/* Header de categorias */
+.col-header{padding:14px 10px 12px;background:var(--bg-card);border-bottom:2px solid var(--border);position:sticky;top:0;z-index:5;display:flex;flex-direction:column;align-items:center;gap:4px}
+.col-header.label-cell{background:var(--bg-deep)}
+.col-header-bar{width:32px;height:4px;border-radius:2px;background:var(--cat-color);margin-bottom:6px}
+.col-header-name{font-size:12px;font-weight:700;color:var(--text-primary);text-align:center;line-height:1.2;letter-spacing:-0.01em}
+.col-header-sub{font-size:10px;color:var(--text-secondary);text-align:center}
+.col-header-count{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--cat-color);margin-top:3px;font-weight:600}
+
+/* Filas (niveles) */
+.row-label{padding:18px 14px;background:var(--bg-deep);border-right:2px solid var(--lvl-color);border-bottom:1px solid var(--border);display:flex;flex-direction:column;justify-content:center;gap:4px;min-width:170px}
+.row-label.alt{background:#0F1422}
+.row-label-num{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--lvl-color);font-weight:700;letter-spacing:0.2em}
+.row-label-name{font-family:'Bricolage Grotesque',serif;font-size:17px;font-weight:700;letter-spacing:-0.02em;line-height:1.1}
+.row-label-years{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-secondary)}
+.row-label-count{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--lvl-color);font-weight:600;margin-top:4px;display:flex;align-items:center;gap:5px}
+.row-label-count::before{content:'';width:6px;height:6px;background:var(--lvl-color);border-radius:50%}
+
+/* Celda de la grilla */
+.cell{padding:8px 6px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);display:flex;flex-direction:column;gap:6px;align-items:stretch;min-height:80px}
+.cell.alt{background:rgba(255,255,255,0.012)}
+.cell:last-child{border-right:none}
+
+/* Card de rol */
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:9px 11px;cursor:pointer;transition:all 0.18s;position:relative;border-left:3px solid var(--card-color);display:flex;flex-direction:column;gap:3px;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;right:0;width:45%;height:100%;background:linear-gradient(135deg,transparent 50%,var(--card-glow));pointer-events:none;opacity:0.5;border-radius:0 8px 8px 0;transition:opacity 0.2s}
+.card:hover{background:var(--bg-elevated);transform:translateY(-2px);box-shadow:0 6px 14px rgba(0,0,0,0.4),0 0 0 1px var(--card-color);z-index:2;border-color:var(--card-color)}
+.card:hover::before{opacity:1}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:6px;position:relative;z-index:1}
+.card-name{font-family:'Bricolage Grotesque',serif;font-size:13px;font-weight:700;color:var(--text-primary);line-height:1.15;letter-spacing:-0.015em;flex:1}
+.card-id{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-dim);font-weight:600;flex-shrink:0}
+.card-name-es{font-size:10px;color:var(--text-muted);font-style:italic;line-height:1.2;position:relative;z-index:1}
+.card-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:4px;position:relative;z-index:1}
+.card-salary{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);font-weight:700}
+.card-demand{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;padding:2px 6px;background:rgba(255,255,255,0.05);border-radius:4px}
+.card-demand.very-high{color:var(--mint);background:rgba(16,185,129,0.1)}
+.card-demand.explosive{color:var(--magenta);background:rgba(236,72,153,0.12);font-weight:700}
+
+/* Card cuando esta atenuada por filtro */
+.card.dim{opacity:0.18;filter:saturate(0.3)}
+.card.dim:hover{opacity:1;filter:none}
+
+/* Cell vacia */
+.cell-empty{display:flex;align-items:center;justify-content:center;color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:10px;padding:10px 4px;opacity:0.4}
+
+/* === FOOTER === */
+.footer{margin-top:32px;padding-top:28px;border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.foot h4{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px}
+.foot p{font-size:13px;color:var(--text-secondary);line-height:1.6}
+.foot p strong{color:var(--text-primary);font-weight:600}
+
+@media (max-width:1100px){
+  .grid{min-width:1500px}
+  .footer{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .app{padding:20px 16px}
+  .grid{min-width:1300px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <div class="brand">
+      <div class="brand-mark">⌘</div>
+      <div>
+        <div>Cyber<em>.map</em> <span style="font-size:13px;color:var(--text-muted);font-weight:400;margin-left:6px">/ Mapa general interactivo</span></div>
+        <div class="brand-meta">50 ROLES · 11 CATEGORÍAS · 5 NIVELES</div>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a class="nav-link" href="Mapa_Carreras_Ciberseguridad.html">→ Versión interactiva detalle</a>
+      <a class="nav-link" href="Mapa_Mental_Carreras.html">→ Vista por niveles</a>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="eyebrow">VISTA PANORÁMICA INTERACTIVA · TODO EN UNA PANTALLA</div>
+    <h1 class="title">El universo completo de <em>ciberseguridad</em>.</h1>
+    <p class="subtitle">
+      <span><span class="arrow">↓</span> Niveles de seniority</span>
+      <span><span class="arrow">→</span> Categorías</span>
+      <span style="color:var(--text-muted)">· Toca cualquier tarjeta para ver el rol en detalle</span>
+    </p>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filters">
+    <div class="filter-group">
+      <span class="filter-label">Categoría</span>
+      <button class="filter-chip" data-filter-cat="defensive" style="--chip-color:#60A5FA"><span class="dot"></span>Defensivo</button><button class="filter-chip" data-filter-cat="offensive" style="--chip-color:#F87171"><span class="dot"></span>Ofensivo</button><button class="filter-chip" data-filter-cat="architecture" style="--chip-color:#34D399"><span class="dot"></span>Arquitectura</button><button class="filter-chip" data-filter-cat="specialized" style="--chip-color:#C084FC"><span class="dot"></span>Especializado</button><button class="filter-chip" data-filter-cat="grc" style="--chip-color:#FBBF24"><span class="dot"></span>GRC</button><button class="filter-chip" data-filter-cat="legal" style="--chip-color:#FB923C"><span class="dot"></span>Legal</button><button class="filter-chip" data-filter-cat="leadership" style="--chip-color:#F472B6"><span class="dot"></span>Gerencial</button><button class="filter-chip" data-filter-cat="sales" style="--chip-color:#818CF8"><span class="dot"></span>Ventas</button><button class="filter-chip" data-filter-cat="awareness" style="--chip-color:#22D3EE"><span class="dot"></span>Awareness</button><button class="filter-chip" data-filter-cat="operations" style="--chip-color:#9CA3AF"><span class="dot"></span>Operaciones</button><button class="filter-chip" data-filter-cat="ecosystem" style="--chip-color:#D4D4D8"><span class="dot"></span>Soporte al Ecosistema</button>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Nivel</span>
+      <button class="filter-chip" data-filter-level="junior" style="--chip-color:#10B981"><span class="dot"></span>Junior</button><button class="filter-chip" data-filter-level="mid" style="--chip-color:#06B6D4"><span class="dot"></span>Mid</button><button class="filter-chip" data-filter-level="senior" style="--chip-color:#F59E0B"><span class="dot"></span>Senior</button><button class="filter-chip" data-filter-level="manager" style="--chip-color:#EC4899"><span class="dot"></span>Manager</button><button class="filter-chip" data-filter-level="executive" style="--chip-color:#C084FC"><span class="dot"></span>Director</button>
+    </div>
+    <button class="reset-btn" id="resetBtn">× Limpiar filtros</button>
+  </div>
+
+  <!-- Grid principal -->
+  <div class="grid-wrapper">
+    <div class="grid" style="grid-template-columns:170px repeat(11, minmax(150px, 1fr))">
+      <div class="col-header label-cell"></div><div class="col-header" style="--cat-color:#60A5FA">
+            <div class="col-header-bar"></div>
+            <div class="col-header-name">Defensivo</div><div class="col-header-sub">Blue Team</div>
+            <div class="col-header-count">6 roles</div>
+        </div><div class="col-header" style="--cat-color:#F87171">
+            <div class="col-header-bar"></div>
+            <div class="col-header-name">Ofensivo</div><div class="col-header-sub">Red Team</div>
+            <div class="col-header-count">4 roles</div>
+        </div><div class="col-header" style="--cat-color:#34D399">
+            <div class="col-header-bar"></div>
+            <div class="col-header-name">Arquitectura</div><div class="col-header-sub">Ingeniería</div>
+            <div class="col-header-count">9 roles</div>
+        </div><div class="col-header" style="--cat-color:#C084FC">
+            <div class="col-header-bar"></div>
+            <div class="col-header-name">Especializado</div>
+            <div class="col-header-count">6 roles</div>
+        </div><div class="col-header" style="--cat-color:#FBBF24">
+            <div class="col-header-bar"></div>
+            <div class="col-header-name">GRC</div><div class="col-header-sub">Cumplimiento</div>
+            <div class="col-header-count">6 roles</div>
+        </div><div class="col-header" style="--cat-color:#FB923C">
+            <div class="col-header-bar"></div>
+            <div class="col-header-name">Legal</div><div class="col-header-sub">Privacidad</div>
+            <div class="col-header-count">2 roles</div>
+        </div><div class="col-header" style="--cat-color:#F472B6">
+            <div class="col-header-bar"></div>
+            <div class="col-header-name">Gerencial</div><div class="col-header-sub">Liderazgo</div>
+            <div class="col-header-count">5 roles</div>
+        </div><div class="col-header" style="--cat-color:#818CF8">
+            <div class="col-header-bar"></div>
+            <div class="col-header-name">Ventas</div><div class="col-header-sub">Consultoría</div>
+            <div class="col-header-count">3 roles</div>
+        </div><div class="col-header" style="--cat-color:#22D3EE">
+            <div class="col-header-bar"></div>
+            <div class="col-header-name">Awareness</div><div class="col-header-sub">Educación</div>
+            <div class="col-header-count">2 roles</div>
+        </div><div class="col-header" style="--cat-color:#9CA3AF">
+            <div class="col-header-bar"></div>
+            <div class="col-header-name">Operaciones</div>
+            <div class="col-header-count">3 roles</div>
+        </div><div class="col-header" style="--cat-color:#D4D4D8">
+            <div class="col-header-bar"></div>
+            <div class="col-header-name">Soporte al Ecosistema</div>
+            <div class="col-header-count">4 roles</div>
+        </div>
+      <div class="row-label alt" style="--lvl-color:#10B981">
+            <div class="row-label-num">NIVEL 01</div>
+            <div class="row-label-name">Junior</div>
+            <div class="row-label-years">0-3 años</div>
+            <div class="row-label-count">4 roles</div>
+        </div><div class="cell alt"><div class="card" data-cat="defensive" data-level="junior" data-role-id="1" style="--card-color:#60A5FA;--card-glow:rgba(96,165,250,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">SOC Analyst Tier 1</div>
+                        <div class="card-id">#01</div>
+                    </div>
+                    <div class="card-name-es">Analista SOC Nivel 1</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$6,700/mes</div>
+                        <div class="card-demand very-high">MUY ALTA</div>
+                    </div>
+                </div></div><div class="cell alt"><div class="card" data-cat="offensive" data-level="junior" data-role-id="7" style="--card-color:#F87171;--card-glow:rgba(248,113,113,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Junior Penetration Tester</div>
+                        <div class="card-id">#07</div>
+                    </div>
+                    <div class="card-name-es">Pentester Junior / Hacker Ético</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$8,300/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div></div><div class="cell alt"><div class="cell-empty">—</div></div><div class="cell alt"><div class="cell-empty">—</div></div><div class="cell alt"><div class="card" data-cat="grc" data-level="junior" data-role-id="26" style="--card-color:#FBBF24;--card-glow:rgba(251,191,36,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">GRC Analyst Junior</div>
+                        <div class="card-id">#26</div>
+                    </div>
+                    <div class="card-name-es">Analista GRC Junior</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$7,900/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div></div><div class="cell alt"><div class="cell-empty">—</div></div><div class="cell alt"><div class="cell-empty">—</div></div><div class="cell alt"><div class="cell-empty">—</div></div><div class="cell alt"><div class="cell-empty">—</div></div><div class="cell alt"><div class="card" data-cat="operations" data-level="junior" data-role-id="45" style="--card-color:#9CA3AF;--card-glow:rgba(156,163,175,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Endpoint Security</div>
+                        <div class="card-id">#45</div>
+                    </div>
+                    <div class="card-name-es">Administrador de Endpoint Secu…</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$6,700/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div></div><div class="cell alt"><div class="cell-empty">—</div></div><div class="row-label " style="--lvl-color:#06B6D4">
+            <div class="row-label-num">NIVEL 02</div>
+            <div class="row-label-name">Mid-Level</div>
+            <div class="row-label-years">3-7 años</div>
+            <div class="row-label-count">26 roles</div>
+        </div><div class="cell "><div class="card" data-cat="defensive" data-level="mid" data-role-id="2" style="--card-color:#60A5FA;--card-glow:rgba(96,165,250,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">SOC Analyst Tier 2</div>
+                        <div class="card-id">#02</div>
+                    </div>
+                    <div class="card-name-es">Analista SOC Nivel 2</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$10,800/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div>
+<div class="card" data-cat="defensive" data-level="mid" data-role-id="4" style="--card-color:#60A5FA;--card-glow:rgba(96,165,250,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Incident Responder</div>
+                        <div class="card-id">#04</div>
+                    </div>
+                    <div class="card-name-es">Respondedor a Incidentes / For…</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$17,900/mes</div>
+                        <div class="card-demand very-high">MUY ALTA</div>
+                    </div>
+                </div>
+<div class="card" data-cat="defensive" data-level="mid" data-role-id="6" style="--card-color:#60A5FA;--card-glow:rgba(96,165,250,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Threat Intelligence Analyst …</div>
+                        <div class="card-id">#06</div>
+                    </div>
+                    <div class="card-name-es">Analista de Inteligencia de Am…</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$13,300/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div></div><div class="cell "><div class="card" data-cat="offensive" data-level="mid" data-role-id="10" style="--card-color:#F87171;--card-glow:rgba(248,113,113,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Bug Bounty Hunter</div>
+                        <div class="card-id">#10</div>
+                    </div>
+                    <div class="card-name-es">Cazador de Bugs / Investigador</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$40,000+ (variable)/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div></div><div class="cell "><div class="card" data-cat="architecture" data-level="mid" data-role-id="11" style="--card-color:#34D399;--card-glow:rgba(52,211,153,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Security Engineer</div>
+                        <div class="card-id">#11</div>
+                    </div>
+                    <div class="card-name-es">Ingeniero de Seguridad</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$13,300/mes</div>
+                        <div class="card-demand very-high">MUY ALTA</div>
+                    </div>
+                </div>
+<div class="card" data-cat="architecture" data-level="mid" data-role-id="12" style="--card-color:#34D399;--card-glow:rgba(52,211,153,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Application Security (AppSec…</div>
+                        <div class="card-id">#12</div>
+                    </div>
+                    <div class="card-name-es">Ingeniero de Seguridad de Apli…</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$17,500/mes</div>
+                        <div class="card-demand very-high">MUY ALTA</div>
+                    </div>
+                </div>
+<div class="card" data-cat="architecture" data-level="mid" data-role-id="13" style="--card-color:#34D399;--card-glow:rgba(52,211,153,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">DevSecOps Engineer</div>
+                        <div class="card-id">#13</div>
+                    </div>
+                    <div class="card-name-es">Ingeniero DevSecOps</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$17,500/mes</div>
+                        <div class="card-demand very-high">MUY ALTA</div>
+                    </div>
+                </div>
+<div class="card" data-cat="architecture" data-level="mid" data-role-id="14" style="--card-color:#34D399;--card-glow:rgba(52,211,153,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Cloud Security Engineer</div>
+                        <div class="card-id">#14</div>
+                    </div>
+                    <div class="card-name-es">Ingeniero de Seguridad en la N…</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$14,600/mes</div>
+                        <div class="card-demand very-high">MUY ALTA</div>
+                    </div>
+                </div>
+<div class="card" data-cat="architecture" data-level="mid" data-role-id="17" style="--card-color:#34D399;--card-glow:rgba(52,211,153,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Network Security Engineer</div>
+                        <div class="card-id">#17</div>
+                    </div>
+                    <div class="card-name-es">Ingeniero de Seguridad de Redes</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$12,500/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div>
+<div class="card" data-cat="architecture" data-level="mid" data-role-id="18" style="--card-color:#34D399;--card-glow:rgba(52,211,153,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">IAM / Identity Engineer</div>
+                        <div class="card-id">#18</div>
+                    </div>
+                    <div class="card-name-es">Ingeniero de Identidad y Accesos</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$11,700/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div></div><div class="cell "><div class="card" data-cat="specialized" data-level="mid" data-role-id="22" style="--card-color:#C084FC;--card-glow:rgba(192,132,252,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Mobile Security Engineer</div>
+                        <div class="card-id">#22</div>
+                    </div>
+                    <div class="card-name-es">Ingeniero de Seguridad Móvil</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$13,800/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div>
+<div class="card" data-cat="specialized" data-level="mid" data-role-id="23" style="--card-color:#C084FC;--card-glow:rgba(192,132,252,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">AI / ML Security Engineer</div>
+                        <div class="card-id">#23</div>
+                    </div>
+                    <div class="card-name-es">Ingeniero de Seguridad de IA</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$24,200/mes</div>
+                        <div class="card-demand explosive">EXPLOSIVA</div>
+                    </div>
+                </div>
+<div class="card" data-cat="specialized" data-level="mid" data-role-id="25" style="--card-color:#C084FC;--card-glow:rgba(192,132,252,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Kubernetes Security Specialist</div>
+                        <div class="card-id">#25</div>
+                    </div>
+                    <div class="card-name-es">Especialista en Seguridad K8s</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$16,700/mes</div>
+                        <div class="card-demand very-high">MUY ALTA</div>
+                    </div>
+                </div></div><div class="cell "><div class="card" data-cat="grc" data-level="mid" data-role-id="27" style="--card-color:#FBBF24;--card-glow:rgba(251,191,36,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Senior GRC Analyst</div>
+                        <div class="card-id">#27</div>
+                    </div>
+                    <div class="card-name-es">Analista Senior GRC</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$12,500/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div>
+<div class="card" data-cat="grc" data-level="mid" data-role-id="28" style="--card-color:#FBBF24;--card-glow:rgba(251,191,36,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">IT Auditor</div>
+                        <div class="card-id">#28</div>
+                    </div>
+                    <div class="card-name-es">Auditor de TI / Sistemas</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$10,000/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div>
+<div class="card" data-cat="grc" data-level="mid" data-role-id="29" style="--card-color:#FBBF24;--card-glow:rgba(251,191,36,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Cyber Risk Manager</div>
+                        <div class="card-id">#29</div>
+                    </div>
+                    <div class="card-name-es">Gerente de Riesgo Cibernético</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$15,000/mes</div>
+                        <div class="card-demand very-high">MUY ALTA</div>
+                    </div>
+                </div>
+<div class="card" data-cat="grc" data-level="mid" data-role-id="30" style="--card-color:#FBBF24;--card-glow:rgba(251,191,36,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Privacy Engineer / Consultant</div>
+                        <div class="card-id">#30</div>
+                    </div>
+                    <div class="card-name-es">Ingeniero / Consultor de Priva…</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$15,000/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div>
+<div class="card" data-cat="grc" data-level="mid" data-role-id="31" style="--card-color:#FBBF24;--card-glow:rgba(251,191,36,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">ISO 27001 Lead Auditor</div>
+                        <div class="card-id">#31</div>
+                    </div>
+                    <div class="card-name-es">Auditor/Implementador Líder IS…</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$11,700/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div></div><div class="cell "><div class="cell-empty">—</div></div><div class="cell "><div class="cell-empty">—</div></div><div class="cell "><div class="card" data-cat="sales" data-level="mid" data-role-id="39" style="--card-color:#818CF8;--card-glow:rgba(129,140,248,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Security Sales Engineer</div>
+                        <div class="card-id">#39</div>
+                    </div>
+                    <div class="card-name-es">Ingeniero de Preventa de Ciber…</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$26,900/mes</div>
+                        <div class="card-demand very-high">MUY ALTA</div>
+                    </div>
+                </div>
+<div class="card" data-cat="sales" data-level="mid" data-role-id="40" style="--card-color:#818CF8;--card-glow:rgba(129,140,248,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Security Consultant / Advisory</div>
+                        <div class="card-id">#40</div>
+                    </div>
+                    <div class="card-name-es">Consultor de Ciberseguridad</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$12,500/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div></div><div class="cell "><div class="card" data-cat="awareness" data-level="mid" data-role-id="42" style="--card-color:#22D3EE;--card-glow:rgba(34,211,238,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Security Awareness Specialist</div>
+                        <div class="card-id">#42</div>
+                    </div>
+                    <div class="card-name-es">Especialista en Concientización</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$17,400/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div>
+<div class="card" data-cat="awareness" data-level="mid" data-role-id="43" style="--card-color:#22D3EE;--card-glow:rgba(34,211,238,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Cybersecurity Trainer</div>
+                        <div class="card-id">#43</div>
+                    </div>
+                    <div class="card-name-es">Instructor de Ciberseguridad</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$11,700/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div></div><div class="cell "><div class="card" data-cat="operations" data-level="mid" data-role-id="44" style="--card-color:#9CA3AF;--card-glow:rgba(156,163,175,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Vulnerability Management Ana…</div>
+                        <div class="card-id">#44</div>
+                    </div>
+                    <div class="card-name-es">Analista de Gestión de Vulnera…</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$18,100/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div>
+<div class="card" data-cat="operations" data-level="mid" data-role-id="46" style="--card-color:#9CA3AF;--card-glow:rgba(156,163,175,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">IAM Operations / PAM Admin</div>
+                        <div class="card-id">#46</div>
+                    </div>
+                    <div class="card-name-es">Administrador de IAM/PAM</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$9,200/mes</div>
+                        <div class="card-demand very-high">MUY ALTA</div>
+                    </div>
+                </div></div><div class="cell "><div class="card" data-cat="ecosystem" data-level="mid" data-role-id="47" style="--card-color:#D4D4D8;--card-glow:rgba(212,212,216,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Cybersecurity Technical Writer</div>
+                        <div class="card-id">#47</div>
+                    </div>
+                    <div class="card-name-es">Redactor Técnico de Cibersegur…</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$10,800/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div>
+<div class="card" data-cat="ecosystem" data-level="mid" data-role-id="48" style="--card-color:#D4D4D8;--card-glow:rgba(212,212,216,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Cybersecurity Recruiter</div>
+                        <div class="card-id">#48</div>
+                    </div>
+                    <div class="card-name-es">Reclutador Especializado en Ci…</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$15,000/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div></div><div class="row-label alt" style="--lvl-color:#F59E0B">
+            <div class="row-label-num">NIVEL 03</div>
+            <div class="row-label-name">Senior</div>
+            <div class="row-label-years">5-12 años</div>
+            <div class="row-label-count">14 roles</div>
+        </div><div class="cell alt"><div class="card" data-cat="defensive" data-level="senior" data-role-id="3" style="--card-color:#60A5FA;--card-glow:rgba(96,165,250,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">SOC Analyst Tier 3</div>
+                        <div class="card-id">#03</div>
+                    </div>
+                    <div class="card-name-es">Cazador de Amenazas</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$18,300/mes</div>
+                        <div class="card-demand very-high">MUY ALTA</div>
+                    </div>
+                </div>
+<div class="card" data-cat="defensive" data-level="senior" data-role-id="5" style="--card-color:#60A5FA;--card-glow:rgba(96,165,250,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Malware Analyst</div>
+                        <div class="card-id">#05</div>
+                    </div>
+                    <div class="card-name-es">Analista de Malware / Ingenier…</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$24,800/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div></div><div class="cell alt"><div class="card" data-cat="offensive" data-level="senior" data-role-id="8" style="--card-color:#F87171;--card-glow:rgba(248,113,113,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Senior Pentester</div>
+                        <div class="card-id">#08</div>
+                    </div>
+                    <div class="card-name-es">Pentester Senior / Operador Re…</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$16,700/mes</div>
+                        <div class="card-demand very-high">MUY ALTA</div>
+                    </div>
+                </div></div><div class="cell alt"><div class="card" data-cat="architecture" data-level="senior" data-role-id="15" style="--card-color:#34D399;--card-glow:rgba(52,211,153,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Cloud Security Architect</div>
+                        <div class="card-id">#15</div>
+                    </div>
+                    <div class="card-name-es">Arquitecto de Seguridad en la …</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$24,200/mes</div>
+                        <div class="card-demand very-high">MUY ALTA</div>
+                    </div>
+                </div>
+<div class="card" data-cat="architecture" data-level="senior" data-role-id="16" style="--card-color:#34D399;--card-glow:rgba(52,211,153,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Security Architect</div>
+                        <div class="card-id">#16</div>
+                    </div>
+                    <div class="card-name-es">Arquitecto de Seguridad</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$20,800/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div>
+<div class="card" data-cat="architecture" data-level="senior" data-role-id="19" style="--card-color:#34D399;--card-glow:rgba(52,211,153,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Zero Trust Architect</div>
+                        <div class="card-id">#19</div>
+                    </div>
+                    <div class="card-name-es">Arquitecto de Confianza Cero</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$23,300/mes</div>
+                        <div class="card-demand very-high">MUY ALTA</div>
+                    </div>
+                </div></div><div class="cell alt"><div class="card" data-cat="specialized" data-level="senior" data-role-id="20" style="--card-color:#C084FC;--card-glow:rgba(192,132,252,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">OT/ICS Security Engineer</div>
+                        <div class="card-id">#20</div>
+                    </div>
+                    <div class="card-name-es">Ingeniero de Seguridad Industr…</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$13,300/mes</div>
+                        <div class="card-demand very-high">MUY ALTA</div>
+                    </div>
+                </div>
+<div class="card" data-cat="specialized" data-level="senior" data-role-id="21" style="--card-color:#C084FC;--card-glow:rgba(192,132,252,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">IoT/Embedded Security Engineer</div>
+                        <div class="card-id">#21</div>
+                    </div>
+                    <div class="card-name-es">Ingeniero de Seguridad IoT</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$14,200/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div>
+<div class="card" data-cat="specialized" data-level="senior" data-role-id="24" style="--card-color:#C084FC;--card-glow:rgba(192,132,252,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Cryptographer</div>
+                        <div class="card-id">#24</div>
+                    </div>
+                    <div class="card-name-es">Criptógrafo / Ingeniero Cripto…</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$20,800/mes</div>
+                        <div class="card-demand ">MEDIA</div>
+                    </div>
+                </div></div><div class="cell alt"><div class="cell-empty">—</div></div><div class="cell alt"><div class="card" data-cat="legal" data-level="senior" data-role-id="32" style="--card-color:#FB923C;--card-glow:rgba(251,146,60,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Data Protection Officer (DPO)</div>
+                        <div class="card-id">#32</div>
+                    </div>
+                    <div class="card-name-es">Oficial de Protección de Datos</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$19,900/mes</div>
+                        <div class="card-demand very-high">MUY ALTA</div>
+                    </div>
+                </div>
+<div class="card" data-cat="legal" data-level="senior" data-role-id="33" style="--card-color:#FB923C;--card-glow:rgba(251,146,60,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Cyber Lawyer</div>
+                        <div class="card-id">#33</div>
+                    </div>
+                    <div class="card-name-es">Abogado en Ciberseguridad y Pr…</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$20,800/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div></div><div class="cell alt"><div class="cell-empty">—</div></div><div class="cell alt"><div class="card" data-cat="sales" data-level="senior" data-role-id="41" style="--card-color:#818CF8;--card-glow:rgba(129,140,248,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Solutions Architect (Vendor)</div>
+                        <div class="card-id">#41</div>
+                    </div>
+                    <div class="card-name-es">Arquitecto de Soluciones (Vend…</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$23,300/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div></div><div class="cell alt"><div class="cell-empty">—</div></div><div class="cell alt"><div class="cell-empty">—</div></div><div class="cell alt"><div class="card" data-cat="ecosystem" data-level="senior" data-role-id="49" style="--card-color:#D4D4D8;--card-glow:rgba(212,212,216,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Cybersecurity Product Manager</div>
+                        <div class="card-id">#49</div>
+                    </div>
+                    <div class="card-name-es">Product Manager de Ciberseguri…</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$20,800/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div>
+<div class="card" data-cat="ecosystem" data-level="senior" data-role-id="50" style="--card-color:#D4D4D8;--card-glow:rgba(212,212,216,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Threat Researcher (Vendor)</div>
+                        <div class="card-id">#50</div>
+                    </div>
+                    <div class="card-name-es">Investigador de Amenazas (Vend…</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$20,800/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div></div><div class="row-label " style="--lvl-color:#EC4899">
+            <div class="row-label-num">NIVEL 04</div>
+            <div class="row-label-name">Manager / Lead</div>
+            <div class="row-label-years">7-12 años</div>
+            <div class="row-label-count">3 roles</div>
+        </div><div class="cell "><div class="cell-empty">—</div></div><div class="cell "><div class="card" data-cat="offensive" data-level="manager" data-role-id="9" style="--card-color:#F87171;--card-glow:rgba(248,113,113,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Red Team Lead</div>
+                        <div class="card-id">#09</div>
+                    </div>
+                    <div class="card-name-es">Líder de Red Team / Emulador d…</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$20,800/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div></div><div class="cell "><div class="cell-empty">—</div></div><div class="cell "><div class="cell-empty">—</div></div><div class="cell "><div class="cell-empty">—</div></div><div class="cell "><div class="cell-empty">—</div></div><div class="cell "><div class="card" data-cat="leadership" data-level="manager" data-role-id="34" style="--card-color:#F472B6;--card-glow:rgba(244,114,182,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Security Manager</div>
+                        <div class="card-id">#34</div>
+                    </div>
+                    <div class="card-name-es">Gerente de Seguridad de la Inf…</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$15,000/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div>
+<div class="card" data-cat="leadership" data-level="manager" data-role-id="35" style="--card-color:#F472B6;--card-glow:rgba(244,114,182,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Security Program Manager</div>
+                        <div class="card-id">#35</div>
+                    </div>
+                    <div class="card-name-es">Gerente de Programa de Seguridad</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$15,000/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div></div><div class="cell "><div class="cell-empty">—</div></div><div class="cell "><div class="cell-empty">—</div></div><div class="cell "><div class="cell-empty">—</div></div><div class="cell "><div class="cell-empty">—</div></div><div class="row-label alt" style="--lvl-color:#C084FC">
+            <div class="row-label-num">NIVEL 05</div>
+            <div class="row-label-name">Director / C-Level</div>
+            <div class="row-label-years">10+ años</div>
+            <div class="row-label-count">3 roles</div>
+        </div><div class="cell alt"><div class="cell-empty">—</div></div><div class="cell alt"><div class="cell-empty">—</div></div><div class="cell alt"><div class="cell-empty">—</div></div><div class="cell alt"><div class="cell-empty">—</div></div><div class="cell alt"><div class="cell-empty">—</div></div><div class="cell alt"><div class="cell-empty">—</div></div><div class="cell alt"><div class="card" data-cat="leadership" data-level="executive" data-role-id="36" style="--card-color:#F472B6;--card-glow:rgba(244,114,182,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">Director of Security / VP</div>
+                        <div class="card-id">#36</div>
+                    </div>
+                    <div class="card-name-es">Director / VP de Seguridad</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$23,300/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div>
+<div class="card" data-cat="leadership" data-level="executive" data-role-id="37" style="--card-color:#F472B6;--card-glow:rgba(244,114,182,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">CISO (Chief Information Secu…</div>
+                        <div class="card-id">#37</div>
+                    </div>
+                    <div class="card-name-es">Director Ejecutivo de Seguridad</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$39,200/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div>
+<div class="card" data-cat="leadership" data-level="executive" data-role-id="38" style="--card-color:#F472B6;--card-glow:rgba(244,114,182,0.12)">
+                    <div class="card-top">
+                        <div class="card-name">vCISO (Virtual / Fractional)</div>
+                        <div class="card-id">#38</div>
+                    </div>
+                    <div class="card-name-es">CISO Virtual / Fraccional</div>
+                    <div class="card-bottom">
+                        <div class="card-salary">$29,200 (variable)/mes</div>
+                        <div class="card-demand ">ALTA</div>
+                    </div>
+                </div></div><div class="cell alt"><div class="cell-empty">—</div></div><div class="cell alt"><div class="cell-empty">—</div></div><div class="cell alt"><div class="cell-empty">—</div></div><div class="cell alt"><div class="cell-empty">—</div></div>
+    </div>
+  </div>
+
+  <!-- Footer informativo -->
+  <div class="footer">
+    <div class="foot">
+      <h4>Cómo leer el mapa</h4>
+      <p>Cada fila es un <strong>nivel de seniority</strong> (Junior arriba → C-Level abajo). Cada columna es una <strong>categoría</strong> o área de especialización. Las tarjetas muestran el nombre del rol, su salario máximo mensual y la demanda actual del mercado.</p>
+    </div>
+    <div class="foot">
+      <h4>Filtros y navegación</h4>
+      <p>Usa los chips de arriba para resaltar roles por <strong>categoría</strong> o <strong>nivel</strong>. Toca cualquier tarjeta para abrirla en la versión interactiva con descripción completa, skills, herramientas, certs y mercados que más contratan.</p>
+    </div>
+    <div class="foot">
+      <h4>Sobre los salarios</h4>
+      <p>El monto mostrado es el <strong>tope mensual</strong> del rango (Senior trabajando para mercado USA). El piso del rango — Junior trabajando en LATAM — está en la versión interactiva. Los rangos se basan en datos 2025-2026.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Estado de filtros
+  let activeCats = new Set();
+  let activeLevels = new Set();
+
+  function applyFilters() {
+    const cards = document.querySelectorAll('.card');
+    const hasCatFilter = activeCats.size > 0;
+    const hasLvlFilter = activeLevels.size > 0;
+    const noFilters = !hasCatFilter && !hasLvlFilter;
+
+    cards.forEach(card => {
+      if (noFilters) {
+        card.classList.remove('dim');
+        return;
+      }
+      const cat = card.dataset.cat;
+      const lvl = card.dataset.level;
+      const matchCat = !hasCatFilter || activeCats.has(cat);
+      const matchLvl = !hasLvlFilter || activeLevels.has(lvl);
+      if (matchCat && matchLvl) {
+        card.classList.remove('dim');
+      } else {
+        card.classList.add('dim');
+      }
+    });
+  }
+
+  // Click en chip de categoria
+  document.querySelectorAll('[data-filter-cat]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const c = btn.dataset.filterCat;
+      if (activeCats.has(c)) {
+        activeCats.delete(c);
+        btn.classList.remove('active');
+      } else {
+        activeCats.add(c);
+        btn.classList.add('active');
+      }
+      applyFilters();
+    });
+  });
+
+  // Click en chip de nivel
+  document.querySelectorAll('[data-filter-level]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const l = btn.dataset.filterLevel;
+      if (activeLevels.has(l)) {
+        activeLevels.delete(l);
+        btn.classList.remove('active');
+      } else {
+        activeLevels.add(l);
+        btn.classList.add('active');
+      }
+      applyFilters();
+    });
+  });
+
+  // Reset
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    activeCats.clear();
+    activeLevels.clear();
+    document.querySelectorAll('.filter-chip.active').forEach(c => c.classList.remove('active'));
+    applyFilters();
+  });
+
+  // Click en card -> navegar a la version interactiva con el rol
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', () => {
+      const roleId = card.dataset.roleId;
+      // Abrir la version interactiva en el rol especifico
+      window.location.href = `Mapa_Carreras_Ciberseguridad.html#role-${roleId}`;
+    });
+  });
+</script>
+</body>
+</html>
