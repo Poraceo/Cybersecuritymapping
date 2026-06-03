@@ -1,0 +1,1759 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catálogo de Certificaciones · Cyber.map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Sora:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-deep:#0A0E1A;--bg-alt:#0E1322;--bg-card:#1A2236;--bg-elevated:#222B42;
+  --border:#2A3149;--border-bright:#3A4566;
+  --text-primary:#F8FAFC;--text-secondary:#CBD5E1;--text-muted:#94A3B8;--text-dim:#64748B;
+  --gold:#F59E0B;--mint:#10B981;--cyan:#06B6D4;--magenta:#EC4899;--violet:#C084FC;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg-deep);color:var(--text-primary);font-family:'Sora',sans-serif;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 1400px 900px at 70% 0%,rgba(245,158,11,0.05),transparent 60%),radial-gradient(ellipse 1200px 800px at 30% 100%,rgba(236,72,153,0.04),transparent 60%);pointer-events:none;z-index:0}
+
+.app{position:relative;z-index:1;max-width:1600px;margin:0 auto;padding:32px 36px 60px}
+
+.top{display:flex;justify-content:space-between;align-items:center;padding-bottom:20px;margin-bottom:24px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:16px}
+.brand{display:flex;align-items:center;gap:14px;font-family:'Bricolage Grotesque',serif;font-weight:700;font-size:22px;letter-spacing:-0.02em}
+.brand-mark{width:38px;height:38px;background:linear-gradient(135deg,var(--gold),var(--magenta));border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:800;font-size:18px;color:var(--bg-deep)}
+.brand em{font-style:italic;color:var(--gold)}
+.brand-meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:0.15em;text-transform:uppercase;margin-top:2px}
+.nav-links{display:flex;gap:10px;flex-wrap:wrap}
+.nav-link{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-secondary);text-decoration:none;padding:8px 14px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;letter-spacing:0.1em;text-transform:uppercase;transition:all 0.2s}
+.nav-link:hover{background:var(--bg-elevated);color:var(--gold);border-color:var(--gold)}
+
+.hero{margin-bottom:28px}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:12px}
+.eyebrow::before{content:'';width:28px;height:1px;background:var(--gold)}
+.title{font-family:'Bricolage Grotesque',serif;font-size:clamp(36px,4vw,52px);font-weight:700;line-height:1;letter-spacing:-0.035em;margin-bottom:10px}
+.title em{font-style:italic;color:var(--gold);font-weight:500}
+.subtitle{color:var(--text-secondary);font-size:14px;max-width:800px;line-height:1.55}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:24px}
+.stat{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:14px 18px;display:flex;flex-direction:column;gap:4px}
+.stat-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:0.15em;text-transform:uppercase}
+.stat-value{font-family:'Bricolage Grotesque',serif;font-size:28px;font-weight:700;color:var(--gold);letter-spacing:-0.02em}
+.stat-sub{font-size:11px;color:var(--text-secondary)}
+
+/* Controls */
+.controls{display:flex;gap:14px;padding:16px 20px;background:var(--bg-card);border:1px solid var(--border);border-radius:14px;margin-bottom:20px;flex-wrap:wrap;align-items:center}
+.control-search{flex:1;min-width:240px;display:flex;align-items:center;gap:10px;background:var(--bg-deep);border:1px solid var(--border);border-radius:100px;padding:8px 16px;transition:border 0.2s}
+.control-search:focus-within{border-color:var(--gold)}
+.control-search input{flex:1;background:none;border:none;color:var(--text-primary);font-family:'Sora',sans-serif;font-size:13px;outline:none}
+.control-search input::placeholder{color:var(--text-dim)}
+.control-search-icon{color:var(--text-muted);font-size:14px}
+.sort-select{background:var(--bg-deep);border:1px solid var(--border);border-radius:100px;padding:8px 14px;color:var(--text-primary);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;outline:none}
+.sort-select:focus{border-color:var(--gold)}
+.match-counter{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-secondary);padding:6px 14px;background:var(--bg-deep);border:1px solid var(--border);border-radius:100px}
+.match-counter strong{color:var(--gold);font-size:13px;font-weight:700}
+
+/* Vendor chips */
+.vendor-filters{display:flex;gap:8px;padding:14px 20px;background:var(--bg-card);border:1px solid var(--border);border-radius:14px;margin-bottom:24px;flex-wrap:wrap;align-items:center}
+.vendor-filters-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:0.2em;text-transform:uppercase;padding-right:8px;border-right:1px solid var(--border);margin-right:4px}
+.vendor-chip{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-secondary);padding:5px 12px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:100px;cursor:pointer;transition:all 0.15s;display:inline-flex;align-items:center;gap:5px}
+.vendor-chip:hover{background:rgba(255,255,255,0.08);color:var(--text-primary)}
+.vendor-chip.active{background:var(--gold);color:var(--bg-deep);border-color:var(--gold);font-weight:600}
+.vendor-chip .count{opacity:0.6;font-size:10px}
+.vendor-chip.active .count{opacity:0.9}
+.reset-btn{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);background:none;border:none;cursor:pointer;text-decoration:underline;letter-spacing:0.1em;text-transform:uppercase;padding:5px 8px}
+.reset-btn:hover{color:var(--gold)}
+
+/* Cert cards */
+.certs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.cert-card{background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:12px;padding:18px 20px;text-decoration:none;color:inherit;transition:all 0.2s;display:flex;flex-direction:column;gap:10px;position:relative;cursor:pointer}
+.cert-card:hover{background:var(--bg-elevated);border-color:var(--gold);transform:translateY(-2px);box-shadow:0 8px 24px rgba(245,158,11,0.15)}
+.cert-card.hidden{display:none}
+.cert-card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.cert-card-acronym{font-family:'Bricolage Grotesque',serif;font-size:22px;font-weight:700;color:var(--gold);letter-spacing:-0.025em;line-height:1.1}
+.cert-card-arrow{color:var(--gold);font-size:14px;flex-shrink:0;opacity:0.7;transition:transform 0.2s}
+.cert-card:hover .cert-card-arrow{transform:translate(3px,-3px);opacity:1}
+.cert-card-fullname{font-size:13px;color:var(--text-secondary);line-height:1.4;font-style:italic;min-height:36px}
+.cert-card-meta{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:11px;font-family:'JetBrains Mono',monospace;padding-top:10px;border-top:1px solid var(--border)}
+.cert-card-label{color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;font-size:10px;padding-top:1px}
+.cert-card-value{color:var(--text-primary);font-weight:500}
+.cert-card-value.price{color:var(--gold);font-weight:700;font-size:12px}
+.cert-card-notes{font-size:11px;color:var(--text-muted);font-style:italic;line-height:1.4;padding:8px 10px;background:rgba(255,255,255,0.03);border-radius:6px;border-left:2px solid rgba(245,158,11,0.4)}
+.cert-card-cta{font-size:11px;color:var(--gold);font-family:'JetBrains Mono',monospace;letter-spacing:0.05em;display:flex;align-items:center;gap:5px;margin-top:auto;padding-top:6px}
+.cert-card-cta::before{content:'→'}
+.cert-card.basic{border-left-color:var(--text-dim);opacity:0.7;cursor:default}
+.cert-card.basic:hover{transform:none;background:var(--bg-card);box-shadow:none}
+
+/* Difficulty badge */
+.cert-card-diff{position:absolute;top:18px;right:42px;font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;padding:2px 7px;border-radius:100px;letter-spacing:0.1em;text-transform:uppercase}
+.cert-card-diff.beginner{background:rgba(16,185,129,0.2);color:var(--mint)}
+.cert-card-diff.intermediate{background:rgba(6,182,212,0.2);color:var(--cyan)}
+.cert-card-diff.advanced{background:rgba(245,158,11,0.2);color:var(--gold)}
+.cert-card-diff.expert{background:rgba(236,72,153,0.2);color:var(--magenta)}
+
+/* Empty state */
+.empty-state{padding:60px 20px;text-align:center;color:var(--text-muted);font-family:'JetBrains Mono',monospace;display:none}
+.empty-state.visible{display:block}
+.empty-state h4{font-family:'Bricolage Grotesque',serif;font-size:24px;color:var(--text-primary);margin-bottom:8px}
+
+@media (max-width:640px){
+  .app{padding:20px 16px}
+  .certs-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <div class="brand">
+      <div class="brand-mark">⌘</div>
+      <div>
+        <div>Cyber<em>.map</em> <span style="font-size:13px;color:var(--text-muted);font-weight:400;margin-left:6px">/ Catálogo de certificaciones</span></div>
+        <div class="brand-meta">99 CERTIFICACIONES · 48 VENDORS · INFO OFICIAL</div>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a class="nav-link" href="Mapa_General_Carreras.html">← Mapa general</a>
+      <a class="nav-link" href="Mapa_Carreras_Ciberseguridad.html">← Detalle por rol</a>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="eyebrow">CATÁLOGO COMPLETO · INFO VERIFICADA EN SITIOS OFICIALES</div>
+    <h1 class="title">Todas las <em>certificaciones</em> que importan.</h1>
+    <p class="subtitle">Cada certificación con su nombre completo, vendor oficial, precio en USD, tiempo de preparación, dificultad y vigencia. Haz click en cualquier tarjeta para ir directamente al sitio oficial del proveedor.</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">Total certificaciones</div>
+      <div class="stat-value">99</div>
+      <div class="stat-sub">Investigadas en fuentes oficiales</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Vendors/Emisores</div>
+      <div class="stat-value">48</div>
+      <div class="stat-sub">ISC2, CompTIA, GIAC, etc.</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Precio promedio</div>
+      <div class="stat-value">$645</div>
+      <div class="stat-sub">USD · examen estándar</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Certs gratis</div>
+      <div class="stat-value">2</div>
+      <div class="stat-sub">Costo $0 USD</div>
+    </div>
+  </div>
+
+  <!-- Search + Sort -->
+  <div class="controls">
+    <div class="control-search">
+      <span class="control-search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Buscar por nombre, acrónimo, vendor (ej: CISSP, ISC2, cloud...)">
+    </div>
+    <select class="sort-select" id="sortSelect">
+      <option value="name">A → Z</option>
+      <option value="price-asc">Precio: bajo a alto</option>
+      <option value="price-desc">Precio: alto a bajo</option>
+      <option value="difficulty">Por dificultad</option>
+    </select>
+    <span class="match-counter" id="matchCounter"><strong>99</strong> visibles</span>
+  </div>
+
+  <!-- Filtros por vendor -->
+  <div class="vendor-filters">
+    <span class="vendor-filters-label">Vendor</span>
+    <button class="vendor-chip" data-vendor-filter="GIAC / SANS">GIAC / SANS<span class="count">13</span></button><button class="vendor-chip" data-vendor-filter="ISC2">ISC2<span class="count">6</span></button><button class="vendor-chip" data-vendor-filter="Offensive Security">Offensive Security<span class="count">6</span></button><button class="vendor-chip" data-vendor-filter="IAPP">IAPP<span class="count">5</span></button><button class="vendor-chip" data-vendor-filter="EC-Council">EC-Council<span class="count">4</span></button><button class="vendor-chip" data-vendor-filter="ISACA">ISACA<span class="count">4</span></button><button class="vendor-chip" data-vendor-filter="Microsoft">Microsoft<span class="count">4</span></button><button class="vendor-chip" data-vendor-filter="PECB">PECB<span class="count">4</span></button><button class="vendor-chip" data-vendor-filter="CompTIA">CompTIA<span class="count">3</span></button><button class="vendor-chip" data-vendor-filter="INE Security">INE Security<span class="count">3</span></button><button class="vendor-chip" data-vendor-filter="AWS">AWS<span class="count">2</span></button><button class="vendor-chip" data-vendor-filter="CNCF / Linux Foundation">CNCF / Linux Foundation<span class="count">2</span></button><button class="vendor-chip" data-vendor-filter="Cisco">Cisco<span class="count">2</span></button><button class="vendor-chip" data-vendor-filter="HackTheBox">HackTheBox<span class="count">2</span></button><button class="vendor-chip" data-vendor-filter="Practical DevSecOps">Practical DevSecOps<span class="count">2</span></button><button class="vendor-chip" data-vendor-filter="Security Blue Team">Security Blue Team<span class="count">2</span></button><button class="vendor-chip" data-vendor-filter="TCM Security">TCM Security<span class="count">2</span></button><button class="vendor-chip" data-vendor-filter="The Open Group">The Open Group<span class="count">2</span></button><button class="vendor-chip" data-vendor-filter="Zero-Point Security">Zero-Point Security<span class="count">2</span></button><button class="vendor-chip" data-vendor-filter="AIRS (ADP)">AIRS (ADP)<span class="count">1</span></button><button class="vendor-chip" data-vendor-filter="AXELOS / PeopleCert">AXELOS / PeopleCert<span class="count">1</span></button><button class="vendor-chip" data-vendor-filter="Altered Security">Altered Security<span class="count">1</span></button><button class="vendor-chip" data-vendor-filter="Check Point">Check Point<span class="count">1</span></button><button class="vendor-chip" data-vendor-filter="Cloud Security Alliance">Cloud Security Alliance<span class="count">1</span></button><button class="vendor-chip" data-vendor-filter="CyberArk">CyberArk<span class="count">1</span></button><button class="vendor-chip" data-vendor-filter="Fortinet">Fortinet<span class="count">1</span></button><button class="vendor-chip" data-vendor-filter="Google Cloud">Google Cloud<span class="count">1</span></button><button class="vendor-chip" data-vendor-filter="IACRB">IACRB<span class="count">1</span></button><button class="vendor-chip" data-vendor-filter="IASSC">IASSC<span class="count">1</span></button><button class="vendor-chip" data-vendor-filter="IIA">IIA<span class="count">1</span></button><button class="vendor-chip" data-vendor-filter="ISA">ISA<span class="count">1</span></button><button class="vendor-chip" data-vendor-filter="ISACA / CSA">ISACA / CSA<span class="count">1</span></button><button class="vendor-chip" data-vendor-filter="KnowBe4">KnowBe4<span class="count">1</span></button><button class="vendor-chip" data-vendor-filter="LinkedIn">LinkedIn<span class="count">1</span></button><button class="vendor-chip" data-vendor-filter="MITRE / MAD20">MITRE / MAD20<span class="count">1</span></button><button class="vendor-chip" data-vendor-filter="Okta">Okta<span class="count">1</span></button><button class="vendor-chip" data-vendor-filter="OpenText">OpenText<span class="count">1</span></button><button class="vendor-chip" data-vendor-filter="PMI">PMI<span class="count">1</span></button><button class="vendor-chip" data-vendor-filter="Palo Alto Networks">Palo Alto Networks<span class="count">1</span></button><button class="vendor-chip" data-vendor-filter="Pragmatic Institute">Pragmatic Institute<span class="count">1</span></button><button class="vendor-chip" data-vendor-filter="Qualys">Qualys<span class="count">1</span></button><button class="vendor-chip" data-vendor-filter="SABSA Institute">SABSA Institute<span class="count">1</span></button><button class="vendor-chip" data-vendor-filter="SANS">SANS<span class="count">1</span></button><button class="vendor-chip" data-vendor-filter="SailPoint">SailPoint<span class="count">1</span></button><button class="vendor-chip" data-vendor-filter="Scrum Alliance">Scrum Alliance<span class="count">1</span></button><button class="vendor-chip" data-vendor-filter="Scrum.org">Scrum.org<span class="count">1</span></button><button class="vendor-chip" data-vendor-filter="Splunk">Splunk<span class="count">1</span></button><button class="vendor-chip" data-vendor-filter="Zscaler">Zscaler<span class="count">1</span></button>
+    <button class="reset-btn" id="resetBtn">× Limpiar</button>
+  </div>
+
+  <!-- Grid de certs -->
+  <div class="certs-grid" id="certsGrid">
+    <a class="cert-card" href="https://academy.hackthebox.com/path/preview/ai-red-teamer" target="_blank" rel="noopener" data-vendor="HackTheBox" data-search="ai red teamer htb certified offensive ai expert (ai red teamer path) hackthebox" data-price="210" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">AI Red Teamer</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">HTB Certified Offensive AI Expert (AI Red Teamer Path)</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">HackTheBox</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$210 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-3 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">Permanente</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://iapp.org/certify/aigp/" target="_blank" rel="noopener" data-vendor="IAPP" data-search="aigp artificial intelligence governance professional iapp" data-price="799" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">AIGP</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">Artificial Intelligence Governance Professional</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">IAPP</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$799 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">1-2 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">2 años (con CPEs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://apps.adp.com/en-US/apps/235407/airs-recruitment-training" target="_blank" rel="noopener" data-vendor="AIRS (ADP)" data-search="airs cir certified internet recruiter airs (adp)" data-price="995" data-diff="Beginner">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">AIRS CIR</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff beginner">Beginner</span>
+                <div class="cert-card-fullname">Certified Internet Recruiter</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">AIRS (ADP)</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$995 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-4 semanas</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">2 años</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://aws.amazon.com/certification/certified-solutions-architect-professional/" target="_blank" rel="noopener" data-vendor="AWS" data-search="aws sap aws certified solutions architect - professional aws" data-price="300" data-diff="Expert">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">AWS SAP</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff expert">Expert</span>
+                <div class="cert-card-fullname">AWS Certified Solutions Architect - Professional</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">AWS</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$300 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">3-6 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://aws.amazon.com/certification/certified-security-specialty/" target="_blank" rel="noopener" data-vendor="AWS" data-search="aws security aws certified security - specialty aws" data-price="300" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">AWS Security</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">AWS Certified Security - Specialty</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">AWS</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$300 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-3 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://learn.microsoft.com/en-us/credentials/certifications/azure-security-engineer/" target="_blank" rel="noopener" data-vendor="Microsoft" data-search="az-500 microsoft azure security engineer associate microsoft" data-price="165" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">AZ-500</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">Microsoft Azure Security Engineer Associate</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Microsoft</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$165 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-3 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">1 año (renovación online gratuita)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.securityblue.team/certifications/blue-team-level-1" target="_blank" rel="noopener" data-vendor="Security Blue Team" data-search="btl1 blue team level 1 security blue team" data-price="490" data-diff="Beginner">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">BTL1</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff beginner">Beginner</span>
+                <div class="cert-card-fullname">Blue Team Level 1</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Security Blue Team</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$490 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">1-3 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">4 años</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.securityblue.team/certifications/blue-team-level-2" target="_blank" rel="noopener" data-vendor="Security Blue Team" data-search="btl2 blue team level 2 security blue team" data-price="999" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">BTL2</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">Blue Team Level 2</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Security Blue Team</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$999 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">3-5 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">4 años</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.practical-devsecops.com/certified-ai-security-professional/" target="_blank" rel="noopener" data-vendor="Practical DevSecOps" data-search="caisp certified ai security professional practical devsecops" data-price="1099" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CAISP</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">Certified AI Security Professional</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Practical DevSecOps</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$1,099 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">1-2 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">Permanente</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.isc2.org/certifications/cc" target="_blank" rel="noopener" data-vendor="ISC2" data-search="cc certified in cybersecurity isc2" data-price="199" data-diff="Beginner">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CC</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff beginner">Beginner</span>
+                <div class="cert-card-fullname">Certified in Cybersecurity</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">ISC2</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$199 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">3-6 semanas</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años (con CPEs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.isaca.org/credentialing/ccak" target="_blank" rel="noopener" data-vendor="ISACA / CSA" data-search="ccak certificate of cloud auditing knowledge isaca / csa" data-price="495" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CCAK</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">Certificate of Cloud Auditing Knowledge</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">ISACA / CSA</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$495 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">1-2 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">Permanente</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.eccouncil.org/train-certify/certified-chief-information-security-officer-cciso/" target="_blank" rel="noopener" data-vendor="EC-Council" data-search="cciso certified chief information security officer ec-council" data-price="999" data-diff="Expert">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CCISO</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff expert">Expert</span>
+                <div class="cert-card-fullname">Certified Chief Information Security Officer</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">EC-Council</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$999 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">3-6 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años (con ECEs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/security/ccnp-security/index.html" target="_blank" rel="noopener" data-vendor="Cisco" data-search="ccnp security cisco certified network professional security cisco" data-price="700" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CCNP Security</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">Cisco Certified Network Professional Security</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Cisco</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$700 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">4-6 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años</span>
+                </div>
+                <div class="cert-card-notes">⚠️ $400 core (350-701 SCOR) + $300 examen concentración.</div>
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://training-certifications.checkpoint.com/" target="_blank" rel="noopener" data-vendor="Check Point" data-search="ccse check point certified security expert check point" data-price="300" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CCSE</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">Check Point Certified Security Expert</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Check Point</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$300 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">1-3 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">2 años</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://cloudsecurityalliance.org/education/ccsk" target="_blank" rel="noopener" data-vendor="Cloud Security Alliance" data-search="ccsk certificate of cloud security knowledge (v5) cloud security alliance" data-price="445" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CCSK</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">Certificate of Cloud Security Knowledge (v5)</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Cloud Security Alliance</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$445 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">4-8 semanas</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">Permanente</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.isc2.org/certifications/ccsp" target="_blank" rel="noopener" data-vendor="ISC2" data-search="ccsp certified cloud security professional isc2" data-price="599" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CCSP</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">Certified Cloud Security Professional</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">ISC2</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$599 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">3-6 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años (con CPEs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.practical-devsecops.com/certified-devsecops-professional/" target="_blank" rel="noopener" data-vendor="Practical DevSecOps" data-search="cdp certified devsecops professional practical devsecops" data-price="899" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CDP</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">Certified DevSecOps Professional</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Practical DevSecOps</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$899 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">1-2 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">Permanente</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.isc2.org/certifications/cgrc" target="_blank" rel="noopener" data-vendor="ISC2" data-search="cgrc certified in governance, risk and compliance isc2" data-price="599" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CGRC</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">Certified in Governance, Risk and Compliance</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">ISC2</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$599 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">3-5 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años (con CPEs)</span>
+                </div>
+                <div class="cert-card-notes">⚠️ Anteriormente CAP. Emitida por ISC2, no por ISACA.</div>
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.theiia.org/en/certifications/cia/" target="_blank" rel="noopener" data-vendor="IIA" data-search="cia certified internal auditor iia" data-price="1515" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CIA</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">Certified Internal Auditor</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">IIA</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$1,515 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">6-12 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">Renovación anual con CPEs</span>
+                </div>
+                <div class="cert-card-notes">⚠️ Costo total: app + 3 exámenes. ~$990 para miembros IIA.</div>
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://iapp.org/certify/cipm/" target="_blank" rel="noopener" data-vendor="IAPP" data-search="cipm certified information privacy manager iapp" data-price="550" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CIPM</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">Certified Information Privacy Manager</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">IAPP</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$550 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">4-8 semanas</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">2 años (con CPEs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://iapp.org/certify/cippe/" target="_blank" rel="noopener" data-vendor="IAPP" data-search="cipp/e certified information privacy professional europe iapp" data-price="550" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CIPP/E</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">Certified Information Privacy Professional Europe</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">IAPP</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$550 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">4-8 semanas</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">2 años (con CPEs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://iapp.org/certify/cipt/" target="_blank" rel="noopener" data-vendor="IAPP" data-search="cipt certified information privacy technologist iapp" data-price="550" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CIPT</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">Certified Information Privacy Technologist</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">IAPP</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$550 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">4-8 semanas</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">2 años (con CPEs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.isaca.org/credentialing/cisa" target="_blank" rel="noopener" data-vendor="ISACA" data-search="cisa certified information systems auditor isaca" data-price="760" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CISA</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">Certified Information Systems Auditor</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">ISACA</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$760 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">3-6 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años (con CPEs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.cisco.com/site/us/en/learn/training-certifications/certifications/cybersecurity/associate/index.html" target="_blank" rel="noopener" data-vendor="Cisco" data-search="cisco cyberops cisco certified cyberops associate cisco" data-price="300" data-diff="Beginner">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">Cisco CyberOps</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff beginner">Beginner</span>
+                <div class="cert-card-fullname">Cisco Certified CyberOps Associate</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Cisco</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$300 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-4 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.isaca.org/credentialing/cism" target="_blank" rel="noopener" data-vendor="ISACA" data-search="cism certified information security manager isaca" data-price="760" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CISM</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">Certified Information Security Manager</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">ISACA</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$760 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">3-6 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años (con CPEs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.isc2.org/certifications/cissp" target="_blank" rel="noopener" data-vendor="ISC2" data-search="cissp certified information systems security professional isc2" data-price="749" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CISSP</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">Certified Information Systems Security Professional</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">ISC2</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$749 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">3-6 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años (con CPEs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.isc2.org/certifications/issap" target="_blank" rel="noopener" data-vendor="ISC2" data-search="cissp-issap information systems security architecture professional isc2" data-price="599" data-diff="Expert">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CISSP-ISSAP</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff expert">Expert</span>
+                <div class="cert-card-fullname">Information Systems Security Architecture Professional</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">ISC2</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$599 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">3-5 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años (con CPEs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://training.linuxfoundation.org/certification/certified-kubernetes-administrator-cka/" target="_blank" rel="noopener" data-vendor="CNCF / Linux Foundation" data-search="cka certified kubernetes administrator cncf / linux foundation" data-price="445" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CKA</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">Certified Kubernetes Administrator</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">CNCF / Linux Foundation</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$445 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-3 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">2 años</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://training.linuxfoundation.org/certification/certified-kubernetes-security-specialist/" target="_blank" rel="noopener" data-vendor="CNCF / Linux Foundation" data-search="cks certified kubernetes security specialist cncf / linux foundation" data-price="445" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CKS</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">Certified Kubernetes Security Specialist</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">CNCF / Linux Foundation</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$445 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-4 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">2 años</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.isaca.org/credentialing/cobit-foundation" target="_blank" rel="noopener" data-vendor="ISACA" data-search="cobit 2019 cobit 2019 foundation isaca" data-price="175" data-diff="Beginner">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">COBIT 2019</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff beginner">Beginner</span>
+                <div class="cert-card-fullname">COBIT 2019 Foundation</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">ISACA</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$175 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-4 semanas</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">Permanente</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://academy.hackthebox.com/preview/certifications/htb-certified-penetration-testing-specialist" target="_blank" rel="noopener" data-vendor="HackTheBox" data-search="cpts htb certified penetration testing specialist hackthebox" data-price="210" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CPTS</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">HTB Certified Penetration Testing Specialist</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">HackTheBox</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$210 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">3-6 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">Permanente</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.isaca.org/credentialing/crisc" target="_blank" rel="noopener" data-vendor="ISACA" data-search="crisc certified in risk and information systems control isaca" data-price="760" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CRISC</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">Certified in Risk and Information Systems Control</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">ISACA</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$760 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">3-5 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años (con CPEs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://training.zeropointsecurity.co.uk/courses/red-team-ops-ii" target="_blank" rel="noopener" data-vendor="Zero-Point Security" data-search="crtl certified red team lead (red team ops ii) zero-point security" data-price="510" data-diff="Expert">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CRTL</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff expert">Expert</span>
+                <div class="cert-card-fullname">Certified Red Team Lead (Red Team Ops II)</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Zero-Point Security</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$510 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-4 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">Permanente</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://training.zeropointsecurity.co.uk/courses/red-team-ops" target="_blank" rel="noopener" data-vendor="Zero-Point Security" data-search="crto certified red team operator zero-point security" data-price="465" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CRTO</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">Certified Red Team Operator</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Zero-Point Security</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$465 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-3 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">Permanente</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.alteredsecurity.com/adlab" target="_blank" rel="noopener" data-vendor="Altered Security" data-search="crtp certified red team professional altered security" data-price="249" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CRTP</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">Certified Red Team Professional</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Altered Security</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$249 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">1-3 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años (renovación gratuita)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.scrumalliance.org/get-certified/product-owner-track/certified-scrum-product-owner" target="_blank" rel="noopener" data-vendor="Scrum Alliance" data-search="cspo certified scrum product owner scrum alliance" data-price="995" data-diff="Beginner">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CSPO</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff beginner">Beginner</span>
+                <div class="cert-card-fullname">Certified Scrum Product Owner</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Scrum Alliance</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$995 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2 días (curso)</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">2 años</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.iacertification.org/cssa_certified_scada_security_architect.html" target="_blank" rel="noopener" data-vendor="IACRB" data-search="cssa certified scada security architect iacrb" data-price="400" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CSSA</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">Certified SCADA Security Architect</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">IACRB</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$400 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-3 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">4 años</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.isc2.org/certifications/csslp" target="_blank" rel="noopener" data-vendor="ISC2" data-search="csslp certified secure software lifecycle professional isc2" data-price="599" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CSSLP</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">Certified Secure Software Lifecycle Professional</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">ISC2</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$599 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">3-6 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años (con CPEs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.eccouncil.org/train-certify/certified-threat-intelligence-analyst-ctia/" target="_blank" rel="noopener" data-vendor="EC-Council" data-search="ctia certified threat intelligence analyst ec-council" data-price="450" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CTIA</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">Certified Threat Intelligence Analyst</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">EC-Council</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$450 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">1-2 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años (con ECEs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://training.cyberark.com/exam/level-2-defender/" target="_blank" rel="noopener" data-vendor="CyberArk" data-search="cyberark defender cyberark defender (pam-def) cyberark" data-price="200" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CyberArk Defender</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">CyberArk Defender (PAM-DEF)</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">CyberArk</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$200 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">1-2 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">2 años</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.comptia.org/certifications/cybersecurity-analyst" target="_blank" rel="noopener" data-vendor="CompTIA" data-search="cysa+ comptia cybersecurity analyst+ comptia" data-price="425" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">CySA+</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">CompTIA Cybersecurity Analyst+</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">CompTIA</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$425 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-3 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años (con CEUs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.eccouncil.org/train-certify/ec-council-certified-encryption-specialist-eces/" target="_blank" rel="noopener" data-vendor="EC-Council" data-search="eces ec-council certified encryption specialist ec-council" data-price="249" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">ECES</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">EC-Council Certified Encryption Specialist</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">EC-Council</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$249 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">3-6 semanas</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años (con ECEs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.eccouncil.org/train-certify/ec-council-certified-incident-handler-ecih/" target="_blank" rel="noopener" data-vendor="EC-Council" data-search="ecih ec-council certified incident handler ec-council" data-price="450" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">ECIH</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">EC-Council Certified Incident Handler</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">EC-Council</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$450 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">1-2 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años (con ECEs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://ine.com/security/certifications/ejpt-certification" target="_blank" rel="noopener" data-vendor="INE Security" data-search="ejpt elearnsecurity junior penetration tester ine security" data-price="249" data-diff="Beginner">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">eJPT</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff beginner">Beginner</span>
+                <div class="cert-card-fullname">eLearnSecurity Junior Penetration Tester</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">INE Security</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$249 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">1-3 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://ine.com/security/certifications/emapt-certification" target="_blank" rel="noopener" data-vendor="INE Security" data-search="emapt elearnsecurity mobile application penetration tester ine security" data-price="400" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">eMAPT</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">eLearnSecurity Mobile Application Penetration Tester</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">INE Security</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$400 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-4 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.opentext.com/learning-services/learning-paths-encase-certifications" target="_blank" rel="noopener" data-vendor="OpenText" data-search="ence encase certified examiner opentext" data-price="500" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">EnCE</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">EnCase Certified Examiner</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">OpenText</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$500 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-4 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://ine.com/security/certifications/ewptx-certification" target="_blank" rel="noopener" data-vendor="INE Security" data-search="ewptx elearnsecurity web application penetration tester extreme ine security" data-price="400" data-diff="Expert">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">eWPTX</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff expert">Expert</span>
+                <div class="cert-card-fullname">eLearnSecurity Web Application Penetration Tester eXtreme</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">INE Security</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$400 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">3-6 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.fortinet.com/training-certification/certifications/fcss" target="_blank" rel="noopener" data-vendor="Fortinet" data-search="fcss fortinet certified solution specialist (anteriormente nse 7/8) fortinet" data-price="400" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">FCSS</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">Fortinet Certified Solution Specialist (anteriormente NSE 7/8)</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Fortinet</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$400 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-4 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">2 años</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://iapp.org/certify/fip/" target="_blank" rel="noopener" data-vendor="IAPP" data-search="fip fellow of information privacy iapp" data-price="0" data-diff="Expert">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">FIP</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff expert">Expert</span>
+                <div class="cert-card-fullname">Fellow of Information Privacy</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">IAPP</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">Gratis</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">Requiere CIPP + CIPM/CIPT/AIGP</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">Mientras certs base estén activas</span>
+                </div>
+                <div class="cert-card-notes">⚠️ Sin costo. Requiere 2 certs IAPP, 3 años de experiencia y 3 referencias.</div>
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.giac.org/certifications/certified-forensic-analyst-gcfa/" target="_blank" rel="noopener" data-vendor="GIAC / SANS" data-search="gcfa giac certified forensic analyst giac / sans" data-price="999" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">GCFA</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">GIAC Certified Forensic Analyst</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">GIAC / SANS</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$999 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">3-6 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">4 años (con CPEs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.giac.org/certifications/certified-intrusion-analyst-gcia/" target="_blank" rel="noopener" data-vendor="GIAC / SANS" data-search="gcia giac certified intrusion analyst giac / sans" data-price="999" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">GCIA</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">GIAC Certified Intrusion Analyst</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">GIAC / SANS</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$999 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">3-5 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">4 años (con CPEs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.giac.org/certifications/certified-incident-handler-gcih/" target="_blank" rel="noopener" data-vendor="GIAC / SANS" data-search="gcih giac certified incident handler giac / sans" data-price="999" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">GCIH</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">GIAC Certified Incident Handler</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">GIAC / SANS</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$999 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-4 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">4 años (con CPEs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.giac.org/certifications/critical-infrastructure-protection-gcip/" target="_blank" rel="noopener" data-vendor="GIAC / SANS" data-search="gcip giac critical infrastructure protection giac / sans" data-price="999" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">GCIP</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">GIAC Critical Infrastructure Protection</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">GIAC / SANS</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$999 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">3-5 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">4 años (con CPEs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://cloud.google.com/learn/certification/cloud-security-engineer" target="_blank" rel="noopener" data-vendor="Google Cloud" data-search="gcp pcse google cloud professional cloud security engineer google cloud" data-price="200" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">GCP PCSE</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">Google Cloud Professional Cloud Security Engineer</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Google Cloud</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$200 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-4 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">2 años</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.giac.org/certifications/cyber-threat-intelligence-gcti/" target="_blank" rel="noopener" data-vendor="GIAC / SANS" data-search="gcti giac cyber threat intelligence giac / sans" data-price="999" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">GCTI</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">GIAC Cyber Threat Intelligence</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">GIAC / SANS</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$999 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-4 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">4 años (con CPEs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.giac.org/certifications/enterprise-vulnerability-assessor-geva/" target="_blank" rel="noopener" data-vendor="GIAC / SANS" data-search="geva giac enterprise vulnerability assessor giac / sans" data-price="-1" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">GEVA</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">GIAC Enterprise Vulnerability Assessor</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">GIAC / SANS</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">No publicado</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">—</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">4 años (con CPEs)</span>
+                </div>
+                <div class="cert-card-notes">⚠️ Actualmente 'En suspenso' por GIAC. No se venden nuevos exámenes.</div>
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.giac.org/certifications/global-industrial-cyber-security-professional-gicsp/" target="_blank" rel="noopener" data-vendor="GIAC / SANS" data-search="gicsp global industrial cyber security professional giac / sans" data-price="999" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">GICSP</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">Global Industrial Cyber Security Professional</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">GIAC / SANS</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$999 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">3-5 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">4 años (con CPEs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.giac.org/certifications/mobile-device-security-analyst-gmob/" target="_blank" rel="noopener" data-vendor="GIAC / SANS" data-search="gmob giac mobile device security analyst giac / sans" data-price="999" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">GMOB</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">GIAC Mobile Device Security Analyst</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">GIAC / SANS</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$999 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-4 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">4 años (con CPEs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.giac.org/certifications/network-forensic-analyst-gnfa/" target="_blank" rel="noopener" data-vendor="GIAC / SANS" data-search="gnfa giac network forensic analyst giac / sans" data-price="999" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">GNFA</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">GIAC Network Forensic Analyst</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">GIAC / SANS</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$999 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">3-5 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">4 años (con CPEs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.giac.org/certifications/reverse-engineering-malware-grem/" target="_blank" rel="noopener" data-vendor="GIAC / SANS" data-search="grem giac reverse engineering malware giac / sans" data-price="999" data-diff="Expert">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">GREM</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff expert">Expert</span>
+                <div class="cert-card-fullname">GIAC Reverse Engineering Malware</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">GIAC / SANS</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$999 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">3-6 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">4 años (con CPEs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.giac.org/certifications/response-industrial-defense-grid/" target="_blank" rel="noopener" data-vendor="GIAC / SANS" data-search="grid giac response and industrial defense giac / sans" data-price="999" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">GRID</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">GIAC Response and Industrial Defense</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">GIAC / SANS</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$999 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">3-5 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">4 años (con CPEs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.giac.org/certifications/red-team-professional-grtp/" target="_blank" rel="noopener" data-vendor="GIAC / SANS" data-search="grtp giac red team professional giac / sans" data-price="999" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">GRTP</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">GIAC Red Team Professional</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">GIAC / SANS</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$999 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">3-5 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">4 años (con CPEs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.giac.org/certifications/web-application-penetration-tester-gwapt/" target="_blank" rel="noopener" data-vendor="GIAC / SANS" data-search="gwapt giac web application penetration tester giac / sans" data-price="999" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">GWAPT</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">GIAC Web Application Penetration Tester</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">GIAC / SANS</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$999 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-4 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">4 años (con CPEs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.isa.org/certification/certificate-programs/isa-iec-62443-cybersecurity-certificate-program" target="_blank" rel="noopener" data-vendor="ISA" data-search="isa/iec 62443 expert isa/iec 62443 cybersecurity expert isa" data-price="-1" data-diff="Expert">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">ISA/IEC 62443 Expert</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff expert">Expert</span>
+                <div class="cert-card-fullname">ISA/IEC 62443 Cybersecurity Expert</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">ISA</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">No publicado</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">6-12 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">Permanente</span>
+                </div>
+                <div class="cert-card-notes">⚠️ Requiere 4 certificados (IC32/IC33/IC34/IC37), cada uno ~$2,000-$3,000.</div>
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://pecb.com/en/education-and-certification-for-individuals/iso-iec-27001/iso-iec-27001-lead-auditor" target="_blank" rel="noopener" data-vendor="PECB" data-search="iso 27001 la iso/iec 27001 lead auditor pecb" data-price="500" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">ISO 27001 LA</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">ISO/IEC 27001 Lead Auditor</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">PECB</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$500 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">1-2 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años</span>
+                </div>
+                <div class="cert-card-notes">⚠️ Precio aproximado; PECB típicamente vende bundle entrenamiento+examen ($1,150-$3,500).</div>
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://pecb.com/en/education-and-certification-for-individuals/iso-iec-27001/iso-iec-27001-lead-implementer" target="_blank" rel="noopener" data-vendor="PECB" data-search="iso 27001 li iso/iec 27001 lead implementer pecb" data-price="500" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">ISO 27001 LI</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">ISO/IEC 27001 Lead Implementer</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">PECB</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$500 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">1-2 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://pecb.com/en/education-and-certification-for-individuals/iso-31000" target="_blank" rel="noopener" data-vendor="PECB" data-search="iso 31000 iso 31000 risk manager pecb" data-price="500" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">ISO 31000</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">ISO 31000 Risk Manager</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">PECB</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$500 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">3-6 semanas</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://pecb.com/en/education-and-certification-for-individuals/iso-iec-42001/iso-iec-42001-lead-auditor" target="_blank" rel="noopener" data-vendor="PECB" data-search="iso 42001 la iso/iec 42001 lead auditor (ai management) pecb" data-price="500" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">ISO 42001 LA</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">ISO/IEC 42001 Lead Auditor (AI Management)</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">PECB</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$500 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">1-2 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.knowbe4.com/" target="_blank" rel="noopener" data-vendor="KnowBe4" data-search="knowbe4 certified knowbe4 certified security awareness practitioner knowbe4" data-price="-1" data-diff="—">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">KnowBe4 Certified</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                
+                <div class="cert-card-fullname">KnowBe4 Certified Security Awareness Practitioner</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">KnowBe4</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">No publicado</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">—</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">—</span>
+                </div>
+                <div class="cert-card-notes">⚠️ KnowBe4 vende suscripciones SaaS corporativas. No hay examen individual público.</div>
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://iassc.org/six-sigma-certification/green-belt-certification/" target="_blank" rel="noopener" data-vendor="IASSC" data-search="lean six sigma iassc certified lean six sigma green belt iassc" data-price="350" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">Lean Six Sigma</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">IASSC Certified Lean Six Sigma Green Belt</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">IASSC</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$350 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-3 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">Permanente</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://business.linkedin.com/talent-solutions/certified-professional-recruiter" target="_blank" rel="noopener" data-vendor="LinkedIn" data-search="linkedin recruiter linkedin certified professional - recruiter linkedin" data-price="199" data-diff="Beginner">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">LinkedIn Recruiter</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff beginner">Beginner</span>
+                <div class="cert-card-fullname">LinkedIn Certified Professional - Recruiter</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">LinkedIn</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$199 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-4 semanas</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">2 años</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://mad20.com/subscriptions" target="_blank" rel="noopener" data-vendor="MITRE / MAD20" data-search="mad20 mitre att&ck defender mitre / mad20" data-price="499" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">MAD20</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">MITRE ATT&CK Defender</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">MITRE / MAD20</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$499 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">1-3 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">Suscripción anual</span>
+                </div>
+                <div class="cert-card-notes">⚠️ Modelo de suscripción. Algunos materiales son gratis.</div>
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://learn.microsoft.com/en-us/credentials/certifications/modern-desktop/" target="_blank" rel="noopener" data-vendor="Microsoft" data-search="md-102 microsoft endpoint administrator associate microsoft" data-price="165" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">MD-102</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">Microsoft Endpoint Administrator Associate</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Microsoft</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$165 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">1-3 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">1 año (renovación online gratuita)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.okta.com/services/certification/" target="_blank" rel="noopener" data-vendor="Okta" data-search="okta pro okta certified professional okta" data-price="250" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">Okta Pro</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">Okta Certified Professional</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Okta</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$250 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">1-2 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">2 años</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.opengroup.org/certifications/openfair" target="_blank" rel="noopener" data-vendor="The Open Group" data-search="open fair open fair 2 foundation the open group" data-price="300" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">Open FAIR</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">Open FAIR 2 Foundation</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">The Open Group</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$300 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">3-6 semanas</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">Permanente</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.offsec.com/courses/osce3/" target="_blank" rel="noopener" data-vendor="Offensive Security" data-search="osce3 offsec certified expert 3 offensive security" data-price="-1" data-diff="Expert">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">OSCE3</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff expert">Expert</span>
+                <div class="cert-card-fullname">OffSec Certified Expert 3</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Offensive Security</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">No publicado</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">9-18 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">Permanente</span>
+                </div>
+                <div class="cert-card-notes">⚠️ Se otorga al obtener OSEP + OSED + OSWE. No tiene examen separado.</div>
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.offsec.com/courses/pen-200/" target="_blank" rel="noopener" data-vendor="Offensive Security" data-search="oscp offsec certified professional offensive security" data-price="1749" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">OSCP</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">OffSec Certified Professional</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Offensive Security</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$1,749 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">3-6 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">Permanente (OSCP) / 3 años (OSCP+)</span>
+                </div>
+                <div class="cert-card-notes">⚠️ $1,749 = bundle de 90-day course + exam.</div>
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.offsec.com/courses/exp-301/" target="_blank" rel="noopener" data-vendor="Offensive Security" data-search="osed offsec exploit developer offensive security" data-price="1749" data-diff="Expert">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">OSED</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff expert">Expert</span>
+                <div class="cert-card-fullname">OffSec Exploit Developer</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Offensive Security</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$1,749 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">4-8 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">Permanente</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.offsec.com/courses/exp-401/" target="_blank" rel="noopener" data-vendor="Offensive Security" data-search="osee offsec exploitation expert offensive security" data-price="-1" data-diff="Expert">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">OSEE</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff expert">Expert</span>
+                <div class="cert-card-fullname">OffSec Exploitation Expert</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Offensive Security</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">No publicado</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">6-12 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">Permanente</span>
+                </div>
+                <div class="cert-card-notes">⚠️ Solo se ofrece presencial en conferencias (~$10-12K).</div>
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.offsec.com/courses/pen-300/" target="_blank" rel="noopener" data-vendor="Offensive Security" data-search="osep offsec experienced penetration tester offensive security" data-price="1749" data-diff="Expert">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">OSEP</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff expert">Expert</span>
+                <div class="cert-card-fullname">OffSec Experienced Penetration Tester</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Offensive Security</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$1,749 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">3-6 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">Permanente</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.offsec.com/courses/web-300/" target="_blank" rel="noopener" data-vendor="Offensive Security" data-search="oswe offsec web expert offensive security" data-price="1749" data-diff="Expert">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">OSWE</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff expert">Expert</span>
+                <div class="cert-card-fullname">OffSec Web Expert</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Offensive Security</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$1,749 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">3-6 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">Permanente</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.paloaltonetworks.com/services/education/certification" target="_blank" rel="noopener" data-vendor="Palo Alto Networks" data-search="pcnse palo alto networks certified network security engineer palo alto networks" data-price="200" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">PCNSE</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">Palo Alto Networks Certified Network Security Engineer</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Palo Alto Networks</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$200 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-3 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">2 años</span>
+                </div>
+                <div class="cert-card-notes">⚠️ ⚠️ Retirada oficialmente el 31 de julio de 2025. Reemplazo más cercano: Network Security Professional.</div>
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.comptia.org/certifications/pentest" target="_blank" rel="noopener" data-vendor="CompTIA" data-search="pentest+ comptia pentest+ comptia" data-price="425" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">PenTest+</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">CompTIA PenTest+</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">CompTIA</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$425 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-3 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años (con CEUs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.pmi.org/certifications/project-management-pmp" target="_blank" rel="noopener" data-vendor="PMI" data-search="pmp project management professional pmi" data-price="675" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">PMP</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">Project Management Professional</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">PMI</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$675 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">3-6 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años (con PDUs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://certifications.tcm-sec.com/" target="_blank" rel="noopener" data-vendor="TCM Security" data-search="pmpa practical mobile pentest associate tcm security" data-price="249" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">PMPA</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">Practical Mobile Pentest Associate</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">TCM Security</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$249 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">1-2 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">Permanente</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://certifications.tcm-sec.com/pnpt/" target="_blank" rel="noopener" data-vendor="TCM Security" data-search="pnpt practical network penetration tester tcm security" data-price="499" data-diff="Advanced">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">PNPT</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff advanced">Advanced</span>
+                <div class="cert-card-fullname">Practical Network Penetration Tester</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">TCM Security</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$499 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-4 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">Permanente</span>
+                </div>
+                <div class="cert-card-notes">⚠️ Incluye 1 retake gratis y 12 meses de entrenamiento.</div>
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.pragmaticinstitute.com/product/product-management-certification/" target="_blank" rel="noopener" data-vendor="Pragmatic Institute" data-search="pragmatic pragmatic institute product management pragmatic institute" data-price="1295" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">Pragmatic</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">Pragmatic Institute Product Management</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Pragmatic Institute</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$1,295 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-3 días por curso</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">Permanente</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.peoplecert.org/browse-certifications/project-programme-and-portfolio-management/PRINCE2-2" target="_blank" rel="noopener" data-vendor="AXELOS / PeopleCert" data-search="prince2 prince2 7 foundation / practitioner axelos / peoplecert" data-price="600" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">PRINCE2</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">PRINCE2 7 Foundation / Practitioner</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">AXELOS / PeopleCert</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$600 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">1-2 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.scrum.org/assessments/professional-scrum-product-owner-i-certification" target="_blank" rel="noopener" data-vendor="Scrum.org" data-search="pspo professional scrum product owner i scrum.org" data-price="200" data-diff="Beginner">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">PSPO</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff beginner">Beginner</span>
+                <div class="cert-card-fullname">Professional Scrum Product Owner I</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Scrum.org</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$200 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-4 semanas</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">Permanente</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.qualys.com/training/course/vmdr/" target="_blank" rel="noopener" data-vendor="Qualys" data-search="qualys vmdr qualys vulnerability management, detection and response qualys" data-price="0" data-diff="Beginner">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">Qualys VMDR</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff beginner">Beginner</span>
+                <div class="cert-card-fullname">Qualys Vulnerability Management, Detection and Response</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Qualys</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">Gratis</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">1-2 semanas</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">Permanente</span>
+                </div>
+                <div class="cert-card-notes">⚠️ Entrenamiento y certificación GRATIS.</div>
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://sabsa.org/certification/" target="_blank" rel="noopener" data-vendor="SABSA Institute" data-search="sabsa scf sabsa chartered foundation (security architecture) sabsa institute" data-price="3760" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">SABSA SCF</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">SABSA Chartered Foundation (Security Architecture)</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">SABSA Institute</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$3,760 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">5 días (curso)</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">Permanente</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.sans.org/security-awareness-training/career-development/credential/" target="_blank" rel="noopener" data-vendor="SANS" data-search="sacp sans security awareness certified practitioner sans" data-price="599" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">SACP</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">SANS Security Awareness Certified Practitioner</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">SANS</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$599 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">1-2 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">4 años</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://university.sailpoint.com/page/professional-certifications-and-knowledge-credentials" target="_blank" rel="noopener" data-vendor="SailPoint" data-search="sailpoint engineer sailpoint certified identitynow engineer sailpoint" data-price="250" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">SailPoint Engineer</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">SailPoint Certified IdentityNow Engineer</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">SailPoint</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$250 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">1-2 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">2 años</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://learn.microsoft.com/en-us/credentials/certifications/cybersecurity-architect-expert/" target="_blank" rel="noopener" data-vendor="Microsoft" data-search="sc-100 microsoft cybersecurity architect expert microsoft" data-price="165" data-diff="Expert">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">SC-100</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff expert">Expert</span>
+                <div class="cert-card-fullname">Microsoft Cybersecurity Architect Expert</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Microsoft</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$165 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-4 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">1 año (renovación online gratuita)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://learn.microsoft.com/en-us/credentials/certifications/security-operations-analyst/" target="_blank" rel="noopener" data-vendor="Microsoft" data-search="sc-200 microsoft security operations analyst microsoft" data-price="165" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">SC-200</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">Microsoft Security Operations Analyst</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Microsoft</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$165 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-3 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">1 año (renovación online gratuita)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.comptia.org/certifications/security" target="_blank" rel="noopener" data-vendor="CompTIA" data-search="security+ comptia security+ comptia" data-price="425" data-diff="Beginner">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">Security+</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff beginner">Beginner</span>
+                <div class="cert-card-fullname">CompTIA Security+</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">CompTIA</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$425 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">1-3 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años (con CEUs)</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.splunk.com/en_us/training/certification-track/splunk-core-certified-user.html" target="_blank" rel="noopener" data-vendor="Splunk" data-search="splunk core splunk core certified user splunk" data-price="130" data-diff="Beginner">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">Splunk Core</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff beginner">Beginner</span>
+                <div class="cert-card-fullname">Splunk Core Certified User</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Splunk</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$130 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-4 semanas</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">3 años</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.opengroup.org/certifications/togaf-individual-certification" target="_blank" rel="noopener" data-vendor="The Open Group" data-search="togaf togaf 10 enterprise architecture the open group" data-price="595" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">TOGAF</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">TOGAF 10 Enterprise Architecture</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">The Open Group</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$595 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">2-3 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">Permanente</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a><a class="cert-card" href="https://www.zscaler.com/zscaler-cyber-academy/digital-transformation-administrator" target="_blank" rel="noopener" data-vendor="Zscaler" data-search="zdta zscaler digital transformation administrator zscaler" data-price="300" data-diff="Intermediate">
+                <div class="cert-card-header">
+                    <span class="cert-card-acronym">ZDTA</span>
+                    <span class="cert-card-arrow">↗</span>
+                </div>
+                <span class="cert-card-diff intermediate">Intermediate</span>
+                <div class="cert-card-fullname">Zscaler Digital Transformation Administrator</div>
+                <div class="cert-card-meta">
+                    <span class="cert-card-label">Vendor</span><span class="cert-card-value">Zscaler</span>
+                    <span class="cert-card-label">Precio</span><span class="cert-card-value price">$300 USD</span>
+                    <span class="cert-card-label">Prep</span><span class="cert-card-value">1-2 meses</span>
+                    <span class="cert-card-label">Vigencia</span><span class="cert-card-value">2 años</span>
+                </div>
+                
+                <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a>
+  </div>
+
+  <div class="empty-state" id="emptyState">
+    <h4>Ninguna certificación coincide</h4>
+    <p>Prueba con otros términos o quita filtros</p>
+  </div>
+</div>
+
+<script>
+  const activeVendors = new Set();
+  let currentSort = 'name';
+  let currentSearch = '';
+
+  function applyFilters() {
+    const cards = document.querySelectorAll('.cert-card');
+    let visible = 0;
+    cards.forEach(card => {
+      const v = card.dataset.vendor;
+      const s = card.dataset.search || '';
+      const matchVendor = activeVendors.size === 0 || activeVendors.has(v);
+      const matchSearch = !currentSearch || s.includes(currentSearch);
+      if (matchVendor && matchSearch) {
+        card.classList.remove('hidden');
+        visible++;
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+    document.getElementById('matchCounter').innerHTML = `<strong>${visible}</strong> visibles`;
+    document.getElementById('emptyState').classList.toggle('visible', visible === 0);
+  }
+
+  function applySort() {
+    const grid = document.getElementById('certsGrid');
+    const cards = Array.from(grid.querySelectorAll('.cert-card'));
+    const diffOrder = {'Beginner': 1, 'Intermediate': 2, 'Advanced': 3, 'Expert': 4, '': 5, '—': 5};
+    cards.sort((a, b) => {
+      if (currentSort === 'name') {
+        return a.querySelector('.cert-card-acronym').textContent.localeCompare(b.querySelector('.cert-card-acronym').textContent);
+      } else if (currentSort === 'price-asc') {
+        const pa = parseInt(a.dataset.price);
+        const pb = parseInt(b.dataset.price);
+        if (pa === -1) return 1;
+        if (pb === -1) return -1;
+        return pa - pb;
+      } else if (currentSort === 'price-desc') {
+        const pa = parseInt(a.dataset.price);
+        const pb = parseInt(b.dataset.price);
+        if (pa === -1) return 1;
+        if (pb === -1) return -1;
+        return pb - pa;
+      } else if (currentSort === 'difficulty') {
+        return (diffOrder[a.dataset.diff] || 5) - (diffOrder[b.dataset.diff] || 5);
+      }
+      return 0;
+    });
+    cards.forEach(c => grid.appendChild(c));
+  }
+
+  // Vendor filter chips
+  document.querySelectorAll('[data-vendor-filter]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const v = btn.dataset.vendorFilter;
+      if (activeVendors.has(v)) {
+        activeVendors.delete(v);
+        btn.classList.remove('active');
+      } else {
+        activeVendors.add(v);
+        btn.classList.add('active');
+      }
+      applyFilters();
+    });
+  });
+
+  // Search
+  document.getElementById('searchInput').addEventListener('input', e => {
+    currentSearch = e.target.value.trim().toLowerCase();
+    applyFilters();
+  });
+
+  // Sort
+  document.getElementById('sortSelect').addEventListener('change', e => {
+    currentSort = e.target.value;
+    applySort();
+  });
+
+  // Reset
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    activeVendors.clear();
+    document.querySelectorAll('.vendor-chip.active').forEach(c => c.classList.remove('active'));
+    document.getElementById('searchInput').value = '';
+    currentSearch = '';
+    applyFilters();
+  });
+</script>
+</body>
+</html>

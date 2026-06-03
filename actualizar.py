@@ -26,6 +26,7 @@ try:
     from build_interactive import build_interactive
     from build_mindmap import build_mindmap
     from build_general import build_general
+    from build_certcatalog import build_catalog
     from build_image import build_map
 except ImportError as e:
     print("=" * 60)
@@ -60,6 +61,7 @@ def main():
     out_interactive = os.path.join(SCRIPT_DIR, "Mapa_Carreras_Ciberseguridad.html")
     out_mindmap = os.path.join(SCRIPT_DIR, "Mapa_Mental_Carreras.html")
     out_general = os.path.join(SCRIPT_DIR, "Mapa_General_Carreras.html")
+    out_catalog = os.path.join(SCRIPT_DIR, "Catalogo_Certificaciones.html")
     out_image = os.path.join(SCRIPT_DIR, "Mapa_General_Carreras.png")
 
     # Paso 1: Parsear roles.md
@@ -134,6 +136,14 @@ def main():
     except Exception as e:
         print(f"❌  ERROR al generar mapa general: {e}")
         sys.exit(1)
+
+    # Paso 4b: Catálogo de certificaciones
+    print("📜  Generando catálogo de certificaciones...")
+    try:
+        size_c = build_catalog(data, out_catalog)
+        print(f"   ✓ {os.path.basename(out_catalog)} ({size_c:,} chars)")
+    except Exception as e:
+        print(f"⚠️  No se pudo generar catálogo de certs: {e}")
 
     # Paso 5: Generar imagen estática del mapa general (PNG)
     print("🎨  Generando imagen PNG del mapa general...")

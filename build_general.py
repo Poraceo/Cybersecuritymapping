@@ -67,6 +67,84 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .reset-btn{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);background:none;border:none;cursor:pointer;text-decoration:underline;letter-spacing:0.1em;text-transform:uppercase}
 .reset-btn:hover{color:var(--gold)}
 
+/* === FILTRO POR SKILLS === */
+.skill-filter{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:20px 22px;margin-bottom:24px;position:relative}
+.skill-filter-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:12px}
+.skill-filter-title{display:flex;align-items:center;gap:10px}
+.skill-filter-title h3{font-family:'Bricolage Grotesque',serif;font-size:18px;font-weight:700;letter-spacing:-0.02em;color:var(--text-primary)}
+.skill-filter-title small{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.15em;padding-left:8px;border-left:1px solid var(--border)}
+.skill-filter-controls{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+
+/* Toggle AND/OR */
+.mode-toggle{display:flex;background:var(--bg-deep);border:1px solid var(--border);border-radius:100px;padding:3px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase}
+.mode-toggle button{background:none;border:none;padding:6px 12px;border-radius:100px;cursor:pointer;color:var(--text-muted);transition:all 0.2s;font-family:inherit;font-size:inherit;letter-spacing:inherit;text-transform:inherit;font-weight:600}
+.mode-toggle button.active{background:var(--gold);color:var(--bg-deep)}
+.mode-toggle button:not(.active):hover{color:var(--text-primary)}
+
+.mode-explainer{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:0.05em}
+.mode-explainer strong{color:var(--gold);font-weight:600}
+
+/* Buscador de skills */
+.skill-search{flex:1;min-width:200px;max-width:320px;display:flex;align-items:center;gap:8px;background:var(--bg-deep);border:1px solid var(--border);border-radius:100px;padding:6px 14px;transition:border 0.2s}
+.skill-search:focus-within{border-color:var(--gold)}
+.skill-search input{flex:1;background:none;border:none;color:var(--text-primary);font-family:'JetBrains Mono',monospace;font-size:12px;outline:none}
+.skill-search input::placeholder{color:var(--text-dim)}
+.skill-search-icon{color:var(--text-muted);font-size:14px}
+
+/* Counter */
+.match-counter{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-secondary);padding:6px 12px;background:var(--bg-deep);border:1px solid var(--border);border-radius:100px}
+.match-counter strong{color:var(--gold);font-size:13px;font-weight:700}
+
+/* Grilla de columnas de skills */
+.skill-columns{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:6px}
+.skill-col{display:flex;flex-direction:column;gap:8px;background:var(--bg-deep);border:1px solid var(--border);border-radius:10px;padding:14px 14px 12px;min-height:60px}
+.skill-col-title{display:flex;align-items:center;justify-content:space-between;padding-bottom:8px;border-bottom:1px solid var(--border);margin-bottom:6px}
+.skill-col-title h4{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--col-color);letter-spacing:0.15em;text-transform:uppercase;font-weight:700;display:flex;align-items:center;gap:6px}
+.skill-col-title h4::before{content:'';width:8px;height:8px;background:var(--col-color);border-radius:50%}
+.skill-col-count{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);font-weight:600}
+.skill-col[data-col="hard"]{--col-color:var(--cyan)}
+.skill-col[data-col="soft"]{--col-color:var(--mint)}
+.skill-col[data-col="certs"]{--col-color:var(--gold)}
+
+.skill-chips-wrap{display:flex;flex-wrap:wrap;gap:5px;max-height:200px;overflow-y:auto;padding-right:4px;align-content:flex-start}
+.skill-chips-wrap::-webkit-scrollbar{width:6px}
+.skill-chips-wrap::-webkit-scrollbar-track{background:transparent}
+.skill-chips-wrap::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+.skill-chip-small{font-size:11px;padding:3px 9px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:100px;color:var(--text-secondary);cursor:pointer;transition:all 0.15s;display:inline-flex;align-items:center;gap:4px;white-space:nowrap;line-height:1.4}
+.skill-chip-small:hover{background:rgba(255,255,255,0.08);color:var(--text-primary);border-color:var(--col-color)}
+.skill-chip-small.active{background:var(--col-color);color:var(--bg-deep);border-color:var(--col-color);font-weight:600}
+.skill-chip-small .x{opacity:0.6;font-size:10px}
+.skill-chip-small.active .x{opacity:1}
+.skill-chip-small.hidden{display:none}
+.skill-chip-small .count-mini{opacity:0.5;font-size:9px;margin-left:2px}
+
+/* Bar de skills activas */
+.active-skills-bar{display:none;margin-top:14px;padding:10px 14px;background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.2);border-radius:10px;align-items:center;gap:10px;flex-wrap:wrap}
+.active-skills-bar.visible{display:flex}
+.active-skills-bar-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;font-weight:700}
+.active-skills-list{display:flex;flex-wrap:wrap;gap:5px;flex:1}
+.active-skill-tag{font-size:11px;padding:3px 9px;background:var(--gold);color:var(--bg-deep);border-radius:100px;font-weight:600;display:inline-flex;align-items:center;gap:5px;cursor:pointer}
+.active-skill-tag:hover{background:#FBBF24}
+.active-skill-tag .x{font-size:13px;line-height:1}
+.clear-skills-btn{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);background:none;border:none;cursor:pointer;text-decoration:underline;letter-spacing:0.1em;text-transform:uppercase}
+.clear-skills-btn:hover{color:var(--gold)}
+
+/* Badge de match en cards */
+.match-badge{position:absolute;top:8px;right:8px;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;padding:2px 7px;border-radius:100px;background:var(--mint);color:var(--bg-deep);z-index:5;letter-spacing:0.05em;display:none}
+.match-badge.visible{display:block}
+.match-badge.partial{background:var(--gold)}
+.match-badge.low{background:var(--text-dim);color:var(--text-primary)}
+
+/* Cuando hay filtro de skills activo, cards sin match se atenúan */
+.card.no-match{opacity:0.15;filter:saturate(0.2)}
+.card.no-match:hover{opacity:0.6}
+
+/* Empty state */
+.empty-state{grid-column:1/-1;padding:40px;text-align:center;color:var(--text-muted);font-family:'JetBrains Mono',monospace;display:none}
+.empty-state.visible{display:block}
+.empty-state h4{font-family:'Bricolage Grotesque',serif;font-size:24px;color:var(--text-primary);margin-bottom:8px}
+
 /* === GRID === */
 .grid-wrapper{overflow-x:auto;padding-bottom:8px}
 .grid{display:grid;gap:0;border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--bg-card);min-width:1800px}
@@ -124,10 +202,16 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 @media (max-width:1100px){
   .grid{min-width:1500px}
   .footer{grid-template-columns:1fr}
+  .skill-columns{grid-template-columns:1fr;gap:14px}
+  .skill-chips-wrap{max-height:160px}
+  .skill-filter-controls{width:100%}
+  .skill-search{max-width:none;width:100%}
 }
 @media (max-width:640px){
   .app{padding:20px 16px}
   .grid{min-width:1300px}
+  .skill-filter-controls{flex-direction:column;align-items:stretch}
+  .mode-toggle{align-self:flex-start}
 }
 """
 
@@ -145,6 +229,51 @@ def build_general(data, output_path):
         for ck in cat_keys:
             grid[(lk, ck)] = [r for r in roles
                               if r.get('level') == lk and r.get('cat') == ck]
+
+    # === Recolectar skills unicas y contar frecuencias ===
+    def clean_skill(s):
+        # Normalizar: quitar estrellas, parentesis con notas, espacios extra
+        s = s.replace('⭐', '').strip()
+        # Mantener parentesis si son parte del nombre como (Microsoft Endpoint)
+        return s
+
+    hard_freq = {}
+    soft_freq = {}
+    cert_freq = {}
+    # Mapeo de skill normalizada -> set de roleId
+    skill_to_roles = {'hard': {}, 'soft': {}, 'certs': {}}
+
+    for r in roles:
+        for s in r.get('hardSkills', []):
+            cs = clean_skill(s)
+            if cs:
+                hard_freq[cs] = hard_freq.get(cs, 0) + 1
+                skill_to_roles['hard'].setdefault(cs, set()).add(r['id'])
+        for s in r.get('softSkills', []):
+            cs = clean_skill(s)
+            if cs:
+                soft_freq[cs] = soft_freq.get(cs, 0) + 1
+                skill_to_roles['soft'].setdefault(cs, set()).add(r['id'])
+        for s in r.get('certs', []):
+            cs = clean_skill(s)
+            if cs:
+                cert_freq[cs] = cert_freq.get(cs, 0) + 1
+                skill_to_roles['certs'].setdefault(cs, set()).add(r['id'])
+
+    # Ordenar por frecuencia descendente (los mas usados arriba)
+    hard_sorted = sorted(hard_freq.items(), key=lambda x: (-x[1], x[0].lower()))
+    soft_sorted = sorted(soft_freq.items(), key=lambda x: (-x[1], x[0].lower()))
+    cert_sorted = sorted(cert_freq.items(), key=lambda x: (-x[1], x[0].lower()))
+
+    # Mapeo de roleId -> {hard:[], soft:[], certs:[]} para embeber en el HTML
+    role_skills = {}
+    for r in roles:
+        role_skills[r['id']] = {
+            'hard': [clean_skill(s) for s in r.get('hardSkills', []) if clean_skill(s)],
+            'soft': [clean_skill(s) for s in r.get('softSkills', []) if clean_skill(s)],
+            'certs': [clean_skill(s) for s in r.get('certs', []) if clean_skill(s)],
+        }
+    role_skills_json = json.dumps(role_skills, ensure_ascii=False)
 
     # Generar grid-template-columns
     grid_cols = f"170px repeat({n_cats}, minmax(150px, 1fr))"
@@ -219,6 +348,7 @@ def build_general(data, output_path):
                     demand_lbl = demand_raw.split('(')[0].strip()[:10]
 
                 cards_html.append(f'''<div class="card" data-cat="{ck}" data-level="{lk}" data-role-id="{role['id']}" style="--card-color:{color};--card-glow:{hex_to_rgba(color, 0.12)}">
+                    <div class="match-badge" data-match-for="{role['id']}"></div>
                     <div class="card-top">
                         <div class="card-name">{role_en_short}</div>
                         <div class="card-id">#{role['id']:02d}</div>
@@ -247,6 +377,23 @@ def build_general(data, output_path):
         lvl_short = lvl['label'].split('/')[0].split('-')[0].strip()
         lvl_chips.append(f'<button class="filter-chip" data-filter-level="{lk}" style="--chip-color:{lvl_color}"><span class="dot"></span>{lvl_short}</button>')
 
+    # === Chips de skills (3 columnas: Hard / Soft / Certs) ===
+    def make_skill_chips(sorted_skills, col_type):
+        chips = []
+        for skill, count in sorted_skills:
+            # Escape simple para atributos HTML
+            skill_attr = skill.replace('"', '&quot;')
+            chips.append(f'<button class="skill-chip-small" data-skill-type="{col_type}" data-skill-name="{skill_attr}">{skill}<span class="count-mini">·{count}</span></button>')
+        return ''.join(chips)
+
+    hard_chips = make_skill_chips(hard_sorted, 'hard')
+    soft_chips = make_skill_chips(soft_sorted, 'soft')
+    cert_chips = make_skill_chips(cert_sorted, 'certs')
+
+    n_hard = len(hard_sorted)
+    n_soft = len(soft_sorted)
+    n_certs = len(cert_sorted)
+
     html = f"""<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -271,6 +418,7 @@ def build_general(data, output_path):
     <div class="nav-links">
       <a class="nav-link" href="Mapa_Carreras_Ciberseguridad.html">→ Versión interactiva detalle</a>
       <a class="nav-link" href="Mapa_Mental_Carreras.html">→ Vista por niveles</a>
+      <a class="nav-link" href="Catalogo_Certificaciones.html" style="color:var(--gold);border-color:var(--gold)">📜 Catálogo de certs</a>
     </div>
   </div>
 
@@ -297,23 +445,78 @@ def build_general(data, output_path):
     <button class="reset-btn" id="resetBtn">× Limpiar filtros</button>
   </div>
 
+  <!-- Filtro POR SKILLS -->
+  <div class="skill-filter">
+    <div class="skill-filter-header">
+      <div class="skill-filter-title">
+        <h3>🎯 ¿Qué skills ya tienes?</h3>
+        <small>FILTRA ROLES POR LO QUE SABES</small>
+      </div>
+      <div class="skill-filter-controls">
+        <div class="skill-search">
+          <span class="skill-search-icon">🔍</span>
+          <input type="text" id="skillSearch" placeholder="Buscar skill o cert...">
+        </div>
+        <div class="mode-toggle">
+          <button class="active" data-mode="OR">CUALQUIERA</button>
+          <button data-mode="AND">TODAS</button>
+        </div>
+        <span class="match-counter" id="matchCounter"><strong>{len(roles)}</strong> roles visibles</span>
+      </div>
+    </div>
+
+    <div class="skill-columns">
+      <div class="skill-col" data-col="hard">
+        <div class="skill-col-title">
+          <h4>Hard Skills</h4>
+          <span class="skill-col-count">{n_hard} totales</span>
+        </div>
+        <div class="skill-chips-wrap" data-col-chips="hard">{hard_chips}</div>
+      </div>
+      <div class="skill-col" data-col="soft">
+        <div class="skill-col-title">
+          <h4>Soft Skills</h4>
+          <span class="skill-col-count">{n_soft} totales</span>
+        </div>
+        <div class="skill-chips-wrap" data-col-chips="soft">{soft_chips}</div>
+      </div>
+      <div class="skill-col" data-col="certs">
+        <div class="skill-col-title">
+          <h4>Certificaciones</h4>
+          <span class="skill-col-count">{n_certs} totales</span>
+        </div>
+        <div class="skill-chips-wrap" data-col-chips="certs">{cert_chips}</div>
+      </div>
+    </div>
+
+    <div class="active-skills-bar" id="activeSkillsBar">
+      <span class="active-skills-bar-label">Tu perfil:</span>
+      <div class="active-skills-list" id="activeSkillsList"></div>
+      <button class="clear-skills-btn" id="clearSkillsBtn">× Limpiar skills</button>
+    </div>
+  </div>
+
   <!-- Grid principal -->
   <div class="grid-wrapper">
     <div class="grid" style="grid-template-columns:{grid_cols}">
       {''.join(headers_html)}
       {''.join(rows_html)}
     </div>
+    <div class="empty-state" id="emptyState">
+      <h4>Ningún rol coincide</h4>
+      <p>Prueba quitando alguna skill o cambiando a modo CUALQUIERA</p>
+    </div>
   </div>
 
   <!-- Footer informativo -->
   <div class="footer">
     <div class="foot">
-      <h4>Cómo leer el mapa</h4>
-      <p>Cada fila es un <strong>nivel de seniority</strong> (Junior arriba → C-Level abajo). Cada columna es una <strong>categoría</strong> o área de especialización. Las tarjetas muestran el nombre del rol, su salario máximo mensual y la demanda actual del mercado.</p>
+      <h4>🎯 Filtro por skills</h4>
+      <p>Selecciona las skills que <strong>ya tienes</strong> (hard, soft o certs). Usa el modo <strong>CUALQUIERA</strong> para descubrir roles donde tu skill aplica, o <strong>TODAS</strong> para encontrar roles que requieren exactamente lo que tienes. El badge en cada card muestra <strong>cuántas de tus skills matchean</strong>.</p>
     </div>
     <div class="foot">
       <h4>Filtros y navegación</h4>
-      <p>Usa los chips de arriba para resaltar roles por <strong>categoría</strong> o <strong>nivel</strong>. Toca cualquier tarjeta para abrirla en la versión interactiva con descripción completa, skills, herramientas, certs y mercados que más contratan.</p>
+      <p>Combina filtros de <strong>categoría</strong>, <strong>nivel</strong> y <strong>skills</strong> para refinar la búsqueda. Toca cualquier tarjeta para abrirla en la versión interactiva con descripción completa, herramientas y mercados que más contratan.</p>
     </div>
     <div class="foot">
       <h4>Sobre los salarios</h4>
@@ -323,32 +526,204 @@ def build_general(data, output_path):
 </div>
 
 <script>
+  // Datos de skills por rol
+  const ROLE_SKILLS = {role_skills_json};
+  const TOTAL_ROLES = {len(roles)};
+
   // Estado de filtros
   let activeCats = new Set();
   let activeLevels = new Set();
+  let activeSkills = {{ hard: new Set(), soft: new Set(), certs: new Set() }};
+  let mode = 'OR'; // 'OR' o 'AND'
+
+  function getTotalActiveSkills() {{
+    return activeSkills.hard.size + activeSkills.soft.size + activeSkills.certs.size;
+  }}
+
+  // Calcula match (porcentaje) entre skills activas y skills del rol
+  function calculateMatch(roleId) {{
+    const total = getTotalActiveSkills();
+    if (total === 0) return {{ matches: 0, total: 0, allMatch: true }};
+
+    const roleData = ROLE_SKILLS[roleId];
+    if (!roleData) return {{ matches: 0, total: total, allMatch: false }};
+
+    let matches = 0;
+    let allMatch = true;
+    const types = ['hard', 'soft', 'certs'];
+    for (const t of types) {{
+      const roleSetLower = new Set((roleData[t] || []).map(s => s.toLowerCase()));
+      for (const userSkill of activeSkills[t]) {{
+        if (roleSetLower.has(userSkill.toLowerCase())) {{
+          matches++;
+        }} else {{
+          allMatch = false;
+        }}
+      }}
+    }}
+    return {{ matches, total, allMatch }};
+  }}
 
   function applyFilters() {{
     const cards = document.querySelectorAll('.card');
     const hasCatFilter = activeCats.size > 0;
     const hasLvlFilter = activeLevels.size > 0;
-    const noFilters = !hasCatFilter && !hasLvlFilter;
+    const hasSkillFilter = getTotalActiveSkills() > 0;
+
+    let visibleCount = 0;
 
     cards.forEach(card => {{
-      if (noFilters) {{
-        card.classList.remove('dim');
-        return;
-      }}
       const cat = card.dataset.cat;
       const lvl = card.dataset.level;
+      const roleId = card.dataset.roleId;
+      const badge = card.querySelector('.match-badge');
+
+      // Filtro cat/level
       const matchCat = !hasCatFilter || activeCats.has(cat);
       const matchLvl = !hasLvlFilter || activeLevels.has(lvl);
-      if (matchCat && matchLvl) {{
-        card.classList.remove('dim');
+
+      // Reset clases
+      card.classList.remove('dim', 'no-match');
+      badge.classList.remove('visible', 'partial', 'low');
+      badge.textContent = '';
+
+      // Filtro de skills
+      let passesSkillFilter = true;
+      if (hasSkillFilter) {{
+        const matchInfo = calculateMatch(roleId);
+        const pct = Math.round((matchInfo.matches / matchInfo.total) * 100);
+
+        if (mode === 'AND') {{
+          // Modo TODAS: solo pasa si tiene TODAS las skills
+          passesSkillFilter = matchInfo.allMatch && matchInfo.matches === matchInfo.total;
+        }} else {{
+          // Modo CUALQUIERA: pasa si tiene al menos una
+          passesSkillFilter = matchInfo.matches > 0;
+        }}
+
+        // Mostrar badge de match si hay alguna coincidencia
+        if (matchInfo.matches > 0) {{
+          badge.textContent = `${{matchInfo.matches}}/${{matchInfo.total}} · ${{pct}}%`;
+          badge.classList.add('visible');
+          if (pct === 100) {{
+            // Verde (default)
+          }} else if (pct >= 50) {{
+            badge.classList.add('partial');
+          }} else {{
+            badge.classList.add('low');
+          }}
+        }}
+      }}
+
+      const fullMatch = matchCat && matchLvl && passesSkillFilter;
+
+      if (fullMatch) {{
+        visibleCount++;
       }} else {{
-        card.classList.add('dim');
+        // Si solo falla por skill, usa 'no-match' (mas atenuado)
+        if (matchCat && matchLvl && !passesSkillFilter) {{
+          card.classList.add('no-match');
+        }} else {{
+          card.classList.add('dim');
+        }}
       }}
     }});
+
+    // Actualizar contador
+    const counter = document.getElementById('matchCounter');
+    if (hasSkillFilter || hasCatFilter || hasLvlFilter) {{
+      counter.innerHTML = `<strong>${{visibleCount}}</strong> de ${{TOTAL_ROLES}} roles ${{hasSkillFilter ? 'matchean' : 'visibles'}}`;
+    }} else {{
+      counter.innerHTML = `<strong>${{TOTAL_ROLES}}</strong> roles visibles`;
+    }}
+
+    // Empty state
+    document.getElementById('emptyState').classList.toggle('visible', visibleCount === 0 && (hasSkillFilter || hasCatFilter || hasLvlFilter));
   }}
+
+  function renderActiveSkillsBar() {{
+    const total = getTotalActiveSkills();
+    const bar = document.getElementById('activeSkillsBar');
+    const list = document.getElementById('activeSkillsList');
+
+    if (total === 0) {{
+      bar.classList.remove('visible');
+      list.innerHTML = '';
+      return;
+    }}
+
+    bar.classList.add('visible');
+    const tags = [];
+    const types = ['hard', 'soft', 'certs'];
+    for (const t of types) {{
+      for (const skill of activeSkills[t]) {{
+        const skillEsc = skill.replace(/"/g, '&quot;');
+        tags.push(`<span class="active-skill-tag" data-tag-type="${{t}}" data-tag-name="${{skillEsc}}">${{skill}}<span class="x">×</span></span>`);
+      }}
+    }}
+    list.innerHTML = tags.join('');
+
+    // Click en tag de skill activa la quita
+    list.querySelectorAll('.active-skill-tag').forEach(tag => {{
+      tag.addEventListener('click', () => {{
+        const t = tag.dataset.tagType;
+        const n = tag.dataset.tagName;
+        activeSkills[t].delete(n);
+        // Actualizar el chip correspondiente
+        document.querySelectorAll(`[data-skill-type="${{t}}"][data-skill-name="${{n.replace(/"/g, '&quot;')}}"]`).forEach(c => c.classList.remove('active'));
+        renderActiveSkillsBar();
+        applyFilters();
+      }});
+    }});
+  }}
+
+  // Click en chip de skill
+  document.querySelectorAll('.skill-chip-small').forEach(chip => {{
+    chip.addEventListener('click', () => {{
+      const type = chip.dataset.skillType;
+      const name = chip.dataset.skillName;
+      if (activeSkills[type].has(name)) {{
+        activeSkills[type].delete(name);
+        chip.classList.remove('active');
+      }} else {{
+        activeSkills[type].add(name);
+        chip.classList.add('active');
+      }}
+      renderActiveSkillsBar();
+      applyFilters();
+    }});
+  }});
+
+  // Toggle AND/OR
+  document.querySelectorAll('.mode-toggle button').forEach(btn => {{
+    btn.addEventListener('click', () => {{
+      document.querySelectorAll('.mode-toggle button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      mode = btn.dataset.mode;
+      applyFilters();
+    }});
+  }});
+
+  // Buscador de skills
+  document.getElementById('skillSearch').addEventListener('input', (e) => {{
+    const q = e.target.value.trim().toLowerCase();
+    document.querySelectorAll('.skill-chip-small').forEach(chip => {{
+      const name = chip.dataset.skillName.toLowerCase();
+      if (!q || name.includes(q)) {{
+        chip.classList.remove('hidden');
+      }} else {{
+        chip.classList.add('hidden');
+      }}
+    }});
+  }});
+
+  // Limpiar skills
+  document.getElementById('clearSkillsBtn').addEventListener('click', () => {{
+    activeSkills = {{ hard: new Set(), soft: new Set(), certs: new Set() }};
+    document.querySelectorAll('.skill-chip-small.active').forEach(c => c.classList.remove('active'));
+    renderActiveSkillsBar();
+    applyFilters();
+  }});
 
   // Click en chip de categoria
   document.querySelectorAll('[data-filter-cat]').forEach(btn => {{
@@ -380,22 +755,30 @@ def build_general(data, output_path):
     }});
   }});
 
-  // Reset
+  // Reset total
   document.getElementById('resetBtn').addEventListener('click', () => {{
     activeCats.clear();
     activeLevels.clear();
-    document.querySelectorAll('.filter-chip.active').forEach(c => c.classList.remove('active'));
+    activeSkills = {{ hard: new Set(), soft: new Set(), certs: new Set() }};
+    document.querySelectorAll('.filter-chip.active, .skill-chip-small.active').forEach(c => c.classList.remove('active'));
+    document.getElementById('skillSearch').value = '';
+    document.querySelectorAll('.skill-chip-small.hidden').forEach(c => c.classList.remove('hidden'));
+    renderActiveSkillsBar();
     applyFilters();
   }});
 
   // Click en card -> navegar a la version interactiva con el rol
   document.querySelectorAll('.card').forEach(card => {{
-    card.addEventListener('click', () => {{
+    card.addEventListener('click', (e) => {{
+      // Si el click fue en el badge, no navega
+      if (e.target.classList.contains('match-badge')) return;
       const roleId = card.dataset.roleId;
-      // Abrir la version interactiva en el rol especifico
       window.location.href = `Mapa_Carreras_Ciberseguridad.html#role-${{roleId}}`;
     }});
   }});
+
+  // Inicializar
+  applyFilters();
 </script>
 </body>
 </html>"""

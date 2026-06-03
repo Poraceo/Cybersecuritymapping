@@ -132,6 +132,25 @@ body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(r
 .chip{font-size:13px;padding:6px 13px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:100px;color:var(--text-secondary)}
 .chip-tool{color:var(--accent-cyan);border-color:rgba(6,182,212,0.3)}
 .chip-cert{color:var(--accent-gold);border-color:rgba(245,158,11,0.3)}
+
+/* === CERT CARDS visibles (info completa de cada cert) === */
+.cert-cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-top:14px}
+.cert-card{background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--accent-gold);border-radius:10px;padding:14px 16px;text-decoration:none;color:inherit;transition:all 0.2s;display:flex;flex-direction:column;gap:8px;position:relative;cursor:pointer}
+.cert-card:hover{background:var(--bg-elevated);border-color:var(--accent-gold);transform:translateY(-2px);box-shadow:0 6px 18px rgba(245,158,11,0.15)}
+.cert-card-basic{border-left-color:var(--text-dim);opacity:0.6;cursor:default}
+.cert-card-basic:hover{transform:none;background:var(--bg-card);box-shadow:none}
+.cert-card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.cert-card-acronym{font-family:'Bricolage Grotesque',serif;font-size:18px;font-weight:700;color:var(--accent-gold);letter-spacing:-0.02em;line-height:1.1}
+.cert-card-arrow{color:var(--accent-gold);font-size:13px;flex-shrink:0;opacity:0.7;transition:transform 0.2s}
+.cert-card:hover .cert-card-arrow{transform:translate(2px,-2px);opacity:1}
+.cert-card-fullname{font-size:13px;color:var(--text-secondary);line-height:1.4;font-style:italic}
+.cert-card-meta{display:grid;grid-template-columns:auto 1fr;gap:5px 14px;font-size:11px;font-family:'JetBrains Mono',monospace;padding-top:8px;border-top:1px solid var(--border)}
+.cert-card-label{color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;font-size:10px;padding-top:1px}
+.cert-card-value{color:var(--text-primary);font-weight:500}
+.cert-card-value.price{color:var(--accent-gold);font-weight:700;font-size:12px}
+.cert-card-notes{margin-top:6px;font-size:11px;color:var(--text-muted);font-style:italic;line-height:1.4;padding:6px 10px;background:rgba(255,255,255,0.03);border-radius:6px;border-left:2px solid rgba(245,158,11,0.4)}
+.cert-card-cta{margin-top:4px;font-size:11px;color:var(--accent-gold);font-family:'JetBrains Mono',monospace;letter-spacing:0.05em;display:flex;align-items:center;gap:5px}
+.cert-card-cta::before{content:'→'}
 .chip-cert.linked{cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:5px;position:relative;transition:all 0.2s}
 .chip-cert.linked:hover{background:rgba(245,158,11,0.15);border-color:var(--accent-gold);transform:translateY(-1px)}
 .chip-cert.linked::after{content:'↗';font-size:10px;opacity:0.7}
@@ -174,6 +193,7 @@ body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(r
     <div class="top-right">
       <a class="view-link" href="Mapa_General_Carreras.html">→ Mapa general</a>
       <a class="view-link" href="Mapa_Mental_Carreras.html">→ Vista panorámica</a>
+      <a class="view-link" href="Catalogo_Certificaciones.html" style="color:var(--accent-gold);border-color:var(--accent-gold)">📜 Catálogo de certs</a>
       <div class="breadcrumb" id="breadcrumb"></div>
     </div>
   </div>
@@ -351,25 +371,30 @@ function renderRole(){
           <div class="skill-group-title">Habilidades técnicas (hard skills)</div><div class="chips-row">${(r.hardSkills||[]).map(s=>`<span class="chip">${s}</span>`).join('')}</div>
           <div class="skill-group-title">Herramientas principales</div><div class="chips-row">${(r.tools||[]).map(s=>`<span class="chip chip-tool">${s}</span>`).join('')}</div>
           <div class="skill-group-title">Habilidades blandas (soft skills)</div><div class="chips-row">${(r.softSkills||[]).map(s=>`<span class="chip chip-soft">${s}</span>`).join('')}</div>
-          <div class="skill-group-title">Certificaciones recomendadas</div><div class="chips-row">${(r.certsEnriched||r.certs||[]).map(c=>{
-            if(typeof c==='string'){ return `<span class="chip chip-cert">${c}</span>`; }
+          <div class="skill-group-title">Certificaciones recomendadas</div><div class="cert-cards-grid">${(r.certsEnriched||r.certs||[]).map(c=>{
+            if(typeof c==='string'){ return `<div class="cert-card cert-card-basic"><div class="cert-card-header"><span class="cert-card-acronym">${c}</span></div></div>`; }
             const info=c.info;
-            if(!info||!info.officialUrl){ return `<span class="chip chip-cert">${c.displayName}</span>`; }
+            if(!info||!info.officialUrl){ return `<div class="cert-card cert-card-basic"><div class="cert-card-header"><span class="cert-card-acronym">${c.displayName}</span></div></div>`; }
             const priceStr=info.priceUSD===0?'Gratis':(info.priceUSD?`$${info.priceUSD} USD`:'Precio no público');
-            const notesHtml=info.notes?`<div class="cert-tooltip-notes">⚠️ ${info.notes}</div>`:'';
-            return `<a class="chip chip-cert linked" href="${info.officialUrl}" target="_blank" rel="noopener">${info.shortName||c.displayName}<div class="cert-tooltip">
-              <div class="cert-tooltip-name">${info.shortName||c.displayName}</div>
-              <div class="cert-tooltip-full">${info.fullName||''}</div>
-              <div class="cert-tooltip-meta">
-                <span class="cert-tooltip-label">Vendor</span><span class="cert-tooltip-value">${info.vendor||'—'}</span>
-                <span class="cert-tooltip-label">Precio</span><span class="cert-tooltip-value price">${priceStr}</span>
-                <span class="cert-tooltip-label">Prep</span><span class="cert-tooltip-value">${info.prepTime||'—'}</span>
-                <span class="cert-tooltip-label">Nivel</span><span class="cert-tooltip-value">${info.difficulty||'—'}</span>
-                <span class="cert-tooltip-label">Vigencia</span><span class="cert-tooltip-value">${info.validity||'—'}</span>
+            const notesHtml=info.notes?`<div class="cert-card-notes">⚠️ ${info.notes}</div>`:'';
+            const fullName=info.fullName?`<div class="cert-card-fullname">${info.fullName}</div>`:'';
+            const vendor=info.vendor||'—';
+            return `<a class="cert-card" href="${info.officialUrl}" target="_blank" rel="noopener" title="Click para ir al sitio oficial de ${vendor}">
+              <div class="cert-card-header">
+                <span class="cert-card-acronym">${info.shortName||c.displayName}</span>
+                <span class="cert-card-arrow">↗</span>
+              </div>
+              ${fullName}
+              <div class="cert-card-meta">
+                <span class="cert-card-label">Vendor</span><span class="cert-card-value">${vendor}</span>
+                <span class="cert-card-label">Precio</span><span class="cert-card-value price">${priceStr}</span>
+                <span class="cert-card-label">Prep</span><span class="cert-card-value">${info.prepTime||'—'}</span>
+                <span class="cert-card-label">Nivel</span><span class="cert-card-value">${info.difficulty||'—'}</span>
+                <span class="cert-card-label">Vigencia</span><span class="cert-card-value">${info.validity||'—'}</span>
               </div>
               ${notesHtml}
-              <div class="cert-tooltip-cta">→ Click para ir al sitio oficial</div>
-            </div></a>`;
+              <div class="cert-card-cta">Ir al sitio oficial</div>
+            </a>`;
           }).join('')}</div>
         </div>
       </div>
