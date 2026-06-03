@@ -18,14 +18,39 @@ de ciberseguridad sin tocar código HTML.
 
 | Archivo | Para qué sirve |
 |---|---|
-| **`roles.md`** | ⭐ El archivo que editás. Contiene los 50 roles y configuración. |
+| **`roles.md`** | ⭐ El archivo principal que editás. Contiene los 50 roles y configuración. |
+| **`certs.json`** | 🆕 Base de datos de 101 certificaciones con precios, URLs oficiales, prep time, vigencia. |
 | **`actualizar.py`** | ⭐ El script que corrés para regenerar los archivos. |
 | `LEEME.md` | Este archivo. |
 | `parser.py`, `build_*.py` | Motor del sistema. **No los edites.** |
-| `Mapa_General_Carreras.html` | 🆕 Vista panorámica INTERACTIVA con filtros. |
-| `Mapa_Carreras_Ciberseguridad.html` | App con navegación completa por niveles/categorías. |
+| `Mapa_General_Carreras.html` | Vista panorámica INTERACTIVA con filtros por skills. |
+| `Mapa_Carreras_Ciberseguridad.html` | App con navegación completa + **tooltips de certs**. |
 | `Mapa_Mental_Carreras.html` | Vista por niveles (orientación más vertical). |
 | `Mapa_General_Carreras.png` | Imagen estática para compartir/imprimir. |
+
+### 🆕 Sobre certs.json
+
+Es un archivo nuevo que contiene info oficial de cada certificación: nombre completo, vendor, precio en USD, tiempo de preparación, dificultad, vigencia y URL oficial. Cuando alguien hace hover sobre un chip de cert en el detalle del rol, aparece un tooltip con toda esa info y al hacer click va al sitio oficial del vendor.
+
+**Para editarlo:** abrilo con cualquier editor de texto. Es formato JSON. Cada certificación tiene esta estructura:
+
+```json
+{
+  "shortName": "CISSP",
+  "fullName": "Certified Information Systems Security Professional",
+  "vendor": "ISC2",
+  "officialUrl": "https://www.isc2.org/certifications/cissp",
+  "priceUSD": 749,
+  "prepTime": "3-6 meses",
+  "difficulty": "Advanced",
+  "validity": "3 años (con CPEs)",
+  "aliases": ["CISSP"]
+}
+```
+
+Si querés agregar una cert nueva, simplemente copiá un bloque entero y modificalo. Los **aliases** son los nombres alternativos que pueden aparecer en `roles.md` — si en algunos roles escribís "Security+" y en otros "CompTIA Security+", agregá ambos al array de aliases.
+
+Si no usás `certs.json`, el sistema sigue funcionando: simplemente los chips de cert se ven sin tooltip ni enlace.
 
 ### 🆕 Las 4 vistas — cuándo usar cada una
 

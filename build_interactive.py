@@ -128,6 +128,20 @@ body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(r
 .chip{font-size:13px;padding:6px 13px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:100px;color:var(--text-secondary)}
 .chip-tool{color:var(--accent-cyan);border-color:rgba(6,182,212,0.3)}
 .chip-cert{color:var(--accent-gold);border-color:rgba(245,158,11,0.3)}
+.chip-cert.linked{cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:5px;position:relative;transition:all 0.2s}
+.chip-cert.linked:hover{background:rgba(245,158,11,0.15);border-color:var(--accent-gold);transform:translateY(-1px)}
+.chip-cert.linked::after{content:'↗';font-size:10px;opacity:0.7}
+.chip-cert .cert-tooltip{position:absolute;bottom:calc(100% + 8px);left:0;background:#1A2030;border:1px solid var(--border-bright);border-radius:10px;padding:14px 16px;width:300px;max-width:90vw;opacity:0;visibility:hidden;transition:all 0.2s;z-index:100;pointer-events:none;box-shadow:0 10px 30px rgba(0,0,0,0.5);text-align:left;white-space:normal;font-family:'Sora',sans-serif}
+.chip-cert.linked:hover .cert-tooltip{opacity:1;visibility:visible;bottom:calc(100% + 12px)}
+.cert-tooltip::after{content:'';position:absolute;top:100%;left:20px;border:6px solid transparent;border-top-color:#1A2030}
+.cert-tooltip-name{font-family:'Bricolage Grotesque',serif;font-size:15px;font-weight:700;color:var(--text-primary);letter-spacing:-0.01em;line-height:1.2;margin-bottom:8px}
+.cert-tooltip-full{font-size:12px;color:var(--text-secondary);margin-bottom:10px;line-height:1.4}
+.cert-tooltip-meta{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:11px;font-family:'JetBrains Mono',monospace}
+.cert-tooltip-label{color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;font-size:9px;padding-top:1px}
+.cert-tooltip-value{color:var(--text-primary)}
+.cert-tooltip-value.price{color:var(--accent-gold);font-weight:600}
+.cert-tooltip-cta{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:11px;color:var(--accent-gold);font-family:'JetBrains Mono',monospace;letter-spacing:0.05em}
+.cert-tooltip-notes{margin-top:8px;font-size:11px;color:var(--text-muted);font-style:italic;line-height:1.4;padding:6px 8px;background:rgba(255,255,255,0.03);border-radius:6px}
 .chip-soft{color:var(--accent-mint);border-color:rgba(16,185,129,0.3)}
 .related-roles{display:flex;flex-direction:column;gap:10px;margin-top:14px}
 .proj-row{display:flex;flex-direction:column;gap:4px;padding:12px 14px;background:rgba(245,158,11,0.05);border-left:2px solid var(--accent-gold);border-radius:6px;margin-bottom:10px}
@@ -359,7 +373,26 @@ function renderRole(){{
           <div class="skill-group-title">Habilidades técnicas (hard skills)</div><div class="chips-row">${{(r.hardSkills||[]).map(s=>`<span class="chip">${{s}}</span>`).join('')}}</div>
           <div class="skill-group-title">Herramientas principales</div><div class="chips-row">${{(r.tools||[]).map(s=>`<span class="chip chip-tool">${{s}}</span>`).join('')}}</div>
           <div class="skill-group-title">Habilidades blandas (soft skills)</div><div class="chips-row">${{(r.softSkills||[]).map(s=>`<span class="chip chip-soft">${{s}}</span>`).join('')}}</div>
-          <div class="skill-group-title">Certificaciones recomendadas</div><div class="chips-row">${{(r.certs||[]).map(s=>`<span class="chip chip-cert">${{s}}</span>`).join('')}}</div>
+          <div class="skill-group-title">Certificaciones recomendadas</div><div class="chips-row">${{(r.certsEnriched||r.certs||[]).map(c=>{{
+            if(typeof c==='string'){{ return `<span class="chip chip-cert">${{c}}</span>`; }}
+            const info=c.info;
+            if(!info||!info.officialUrl){{ return `<span class="chip chip-cert">${{c.displayName}}</span>`; }}
+            const priceStr=info.priceUSD===0?'Gratis':(info.priceUSD?`$${{info.priceUSD}} USD`:'Precio no público');
+            const notesHtml=info.notes?`<div class="cert-tooltip-notes">⚠️ ${{info.notes}}</div>`:'';
+            return `<a class="chip chip-cert linked" href="${{info.officialUrl}}" target="_blank" rel="noopener">${{info.shortName||c.displayName}}<div class="cert-tooltip">
+              <div class="cert-tooltip-name">${{info.shortName||c.displayName}}</div>
+              <div class="cert-tooltip-full">${{info.fullName||''}}</div>
+              <div class="cert-tooltip-meta">
+                <span class="cert-tooltip-label">Vendor</span><span class="cert-tooltip-value">${{info.vendor||'—'}}</span>
+                <span class="cert-tooltip-label">Precio</span><span class="cert-tooltip-value price">${{priceStr}}</span>
+                <span class="cert-tooltip-label">Prep</span><span class="cert-tooltip-value">${{info.prepTime||'—'}}</span>
+                <span class="cert-tooltip-label">Nivel</span><span class="cert-tooltip-value">${{info.difficulty||'—'}}</span>
+                <span class="cert-tooltip-label">Vigencia</span><span class="cert-tooltip-value">${{info.validity||'—'}}</span>
+              </div>
+              ${{notesHtml}}
+              <div class="cert-tooltip-cta">→ Click para ir al sitio oficial</div>
+            </div></a>`;
+          }}).join('')}}</div>
         </div>
       </div>
       <div>

@@ -56,6 +56,7 @@ def main():
     print("")
 
     md_path = os.path.join(SCRIPT_DIR, "roles.md")
+    certs_path = os.path.join(SCRIPT_DIR, "certs.json")
     out_interactive = os.path.join(SCRIPT_DIR, "Mapa_Carreras_Ciberseguridad.html")
     out_mindmap = os.path.join(SCRIPT_DIR, "Mapa_Mental_Carreras.html")
     out_general = os.path.join(SCRIPT_DIR, "Mapa_General_Carreras.html")
@@ -64,7 +65,7 @@ def main():
     # Paso 1: Parsear roles.md
     print("📖  Leyendo roles.md...")
     try:
-        data = parse_md(md_path)
+        data = parse_md(md_path, certs_path)
     except Exception as e:
         print(f"❌  ERROR al leer roles.md: {e}")
         print("    Revisa que el formato del archivo sea correcto.")
@@ -80,6 +81,18 @@ def main():
     print(f"   ✓ {n_cats} categorías")
     print(f"   ✓ {n_levels} niveles")
     print(f"   ✓ {n_trending} roles trending")
+
+    # Info de certs enriquecidas
+    n_certs_lookup = len(data.get('certsLookup', {}))
+    if n_certs_lookup > 0:
+        total_enriched = sum(
+            sum(1 for c in r.get('certsEnriched', []) if c.get('info'))
+            for r in data['roles']
+        )
+        total_cert_mentions = sum(len(r.get('certsEnriched', [])) for r in data['roles'])
+        print(f"   ✓ {n_certs_lookup} certs en base oficial · {total_enriched}/{total_cert_mentions} chips con datos oficiales")
+    else:
+        print(f"   ⚠️  certs.json no encontrado (los chips de cert no tendrán datos oficiales)")
     print("")
 
     # Validaciones básicas

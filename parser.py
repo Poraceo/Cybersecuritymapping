@@ -1,12 +1,49 @@
 """
 Parser del archivo roles.md
-Devuelve un dict con: config, categorias, niveles, trending, roles
+Devuelve un dict con: config, categorias, niveles, trending, roles, certsLookup
 """
 import re
 import sys
 import os
+import json
 
-def parse_md(md_path):
+
+def load_certs_data(certs_path):
+    """Carga certs.json y devuelve dict: aliasLowercase -> certData."""
+    if not os.path.exists(certs_path):
+        return {}
+    try:
+        with open(certs_path, 'r', encoding='utf-8') as f:
+            raw = json.load(f)
+        lookup = {}
+        for cert in raw.get('certs', []):
+            keys = [cert.get('shortName', '')] + cert.get('aliases', [])
+            for k in keys:
+                if k:
+                    lookup[k.strip().lower()] = cert
+        return lookup
+    except Exception as e:
+        print(f"⚠️  Advertencia: no se pudo cargar certs.json: {e}")
+        return {}
+
+
+def find_cert(cert_name, certs_lookup):
+    """Busca info oficial de una cert. Devuelve None si no encuentra."""
+    if not cert_name or not certs_lookup:
+        return None
+    clean = cert_name.replace('⭐', '').strip().lower()
+    if clean in certs_lookup:
+        return certs_lookup[clean]
+    no_parens = re.sub(r'\s*\([^)]*\)\s*$', '', clean).strip()
+    if no_parens in certs_lookup:
+        return certs_lookup[no_parens]
+    for key, val in certs_lookup.items():
+        if (clean in key or key in clean) and min(len(clean), len(key)) >= 3:
+            return val
+    return None
+
+
+def parse_md(md_path, certs_path=None):
     if not os.path.exists(md_path):
         print(f"ERROR: No encuentro el archivo {md_path}")
         print("Asegurate de que roles.md este en la misma carpeta que actualizar.py")
@@ -124,12 +161,29 @@ def parse_md(md_path):
 
     roles.sort(key=lambda r: r['id'])
 
+    # Cargar datos de certificaciones si está disponible
+    certs_lookup = {}
+    if certs_path:
+        certs_lookup = load_certs_data(certs_path)
+
+    # Enriquecer cada cert en cada rol con su info oficial
+    for role in roles:
+        enriched_certs = []
+        for cert_name in role.get('certs', []):
+            cert_data = find_cert(cert_name, certs_lookup)
+            enriched_certs.append({
+                'displayName': cert_name,
+                'info': cert_data  # None si no se encontró
+            })
+        role['certsEnriched'] = enriched_certs
+
     return {
         'config': config,
         'categories': categories,
         'levels': levels,
         'trending': trending,
-        'roles': roles
+        'roles': roles,
+        'certsLookup': certs_lookup
     }
 
 
