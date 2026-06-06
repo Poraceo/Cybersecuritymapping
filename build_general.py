@@ -418,6 +418,7 @@ def build_general(data, output_path):
     <div class="nav-links">
       <a class="nav-link" href="Mapa_Carreras_Ciberseguridad.html">→ Versión interactiva detalle</a>
       <a class="nav-link" href="Mapa_Mental_Carreras.html">→ Vista por niveles</a>
+      <a class="nav-link" href="Comparar_Roles.html" style="color:var(--cyan);border-color:var(--cyan)">⚖ Comparar roles</a>
       <a class="nav-link" href="Catalogo_Certificaciones.html" style="color:var(--gold);border-color:var(--gold)">📜 Catálogo de certs</a>
     </div>
   </div>

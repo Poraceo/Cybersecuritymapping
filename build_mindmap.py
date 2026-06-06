@@ -227,6 +227,7 @@ def build_mindmap(data, output_path):
     <div style="display:flex;gap:10px;flex-wrap:wrap">
       <a class="mm-link" href="Mapa_General_Carreras.html">→ Mapa general</a>
       <a class="mm-link" href="Mapa_Carreras_Ciberseguridad.html">→ Versión interactiva</a>
+      <a class="mm-link" href="Comparar_Roles.html" style="color:#06B6D4;border-color:#06B6D4">⚖ Comparar roles</a>
       <a class="mm-link" href="Catalogo_Certificaciones.html" style="color:var(--accent-gold);border-color:var(--accent-gold)">📜 Catálogo de certs</a>
     </div>
   </div>

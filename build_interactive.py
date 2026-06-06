@@ -215,6 +215,7 @@ def build_interactive(data, output_path):
     <div class="top-right">
       <a class="view-link" href="Mapa_General_Carreras.html">→ Mapa general</a>
       <a class="view-link" href="Mapa_Mental_Carreras.html">→ Vista panorámica</a>
+      <a class="view-link" href="Comparar_Roles.html" style="color:var(--accent-cyan);border-color:var(--accent-cyan)">⚖ Comparar roles</a>
       <a class="view-link" href="Catalogo_Certificaciones.html" style="color:var(--accent-gold);border-color:var(--accent-gold)">📜 Catálogo de certs</a>
       <div class="breadcrumb" id="breadcrumb"></div>
     </div>
@@ -369,7 +370,10 @@ function renderRole(){{
     return `<a class="related-role-link" onclick="navigate('role',${{x.id}})"><span class="related-role-link-id">#${{String(x.id).padStart(2,'0')}}</span><span class="related-role-link-name">${{x.roleEN}}</span><span class="related-role-link-arrow">→</span></a>`;
   }}).join('');
   return `<div class="detail" style="--detail-color:${{dc}};--detail-glow:${{dg}};">
-    <button class="back-btn" onclick="goBack()">${{ICONS.back}} Volver</button>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:32px;align-items:center">
+      <button class="back-btn" onclick="goBack()" style="margin-bottom:0">${{ICONS.back}} Volver</button>
+      <a class="back-btn" href="Comparar_Roles.html#${{r.id}}" style="margin-bottom:0;color:#06B6D4;border-color:rgba(6,182,212,0.3);text-decoration:none">⚖ Comparar con otro rol</a>
+    </div>
     <div class="detail-hero">
       <div class="detail-hero-top">
         <span class="detail-badge detail-cat-badge">${{c.label}}</span>

@@ -27,6 +27,7 @@ try:
     from build_mindmap import build_mindmap
     from build_general import build_general
     from build_certcatalog import build_catalog
+    from build_compare import build_compare
     from build_image import build_map
 except ImportError as e:
     print("=" * 60)
@@ -62,6 +63,7 @@ def main():
     out_mindmap = os.path.join(SCRIPT_DIR, "Mapa_Mental_Carreras.html")
     out_general = os.path.join(SCRIPT_DIR, "Mapa_General_Carreras.html")
     out_catalog = os.path.join(SCRIPT_DIR, "Catalogo_Certificaciones.html")
+    out_compare = os.path.join(SCRIPT_DIR, "Comparar_Roles.html")
     out_image = os.path.join(SCRIPT_DIR, "Mapa_General_Carreras.png")
 
     # Paso 1: Parsear roles.md
@@ -144,6 +146,14 @@ def main():
         print(f"   ✓ {os.path.basename(out_catalog)} ({size_c:,} chars)")
     except Exception as e:
         print(f"⚠️  No se pudo generar catálogo de certs: {e}")
+
+    # Paso 4c: Comparador de roles
+    print("⚖   Generando comparador de roles...")
+    try:
+        size_cmp = build_compare(data, out_compare)
+        print(f"   ✓ {os.path.basename(out_compare)} ({size_cmp:,} chars)")
+    except Exception as e:
+        print(f"⚠️  No se pudo generar comparador: {e}")
 
     # Paso 5: Generar imagen estática del mapa general (PNG)
     print("🎨  Generando imagen PNG del mapa general...")
